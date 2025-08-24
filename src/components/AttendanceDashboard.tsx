@@ -27,8 +27,8 @@ export default function AttendanceDashboard() {
   const [tab, setTab] = useState<'day'|'month'|'person'>('day');
   const [isLoading, setIsLoading] = useState(false);
 
-  // รายวัน
-  const [selectedDate, setSelectedDate] = useState(toISO(new Date()));
+  // รายวัน (เปลี่ยนเป็นวันที่มีข้อมูล)
+  const [selectedDate, setSelectedDate] = useState('2025-08-23');
 
   // รายเดือน (ช่วงเดือน)
   const now = new Date();
@@ -147,20 +147,50 @@ export default function AttendanceDashboard() {
   ];
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Clock className="h-5 w-5 text-gray-500" />
-          <span className="text-sm text-gray-500">Asia/Bangkok</span>
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6 space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/60 backdrop-blur-md rounded-full shadow-lg border border-white/20">
+          <Users className="h-6 w-6 text-indigo-600" />
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            ระบบบริหารการเข้างาน
+          </h1>
+        </div>
+        
+        <div className="flex items-center justify-center gap-2 text-slate-600">
+          <Clock className="h-4 w-4" />
+          <span className="text-sm font-medium">Asia/Bangkok • {new Date().toLocaleDateString('th-TH', {
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric',
+            weekday: 'long'
+          })}</span>
         </div>
       </div>
 
       <Tabs value={tab} onValueChange={(v)=>setTab(v as any)}>
-        <TabsList className="mb-4">
-          <TabsTrigger value="day">รายวัน</TabsTrigger>
-          <TabsTrigger value="month">รายเดือน</TabsTrigger>
-          <TabsTrigger value="person">รายบุคคล</TabsTrigger>
-        </TabsList>
+        <div className="flex justify-center mb-8">
+          <TabsList className="bg-white/60 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl p-2">
+            <TabsTrigger 
+              value="day" 
+              className="px-6 py-3 rounded-xl font-medium data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
+            >
+              📅 รายวัน
+            </TabsTrigger>
+            <TabsTrigger 
+              value="month" 
+              className="px-6 py-3 rounded-xl font-medium data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
+            >
+              📊 รายเดือน
+            </TabsTrigger>
+            <TabsTrigger 
+              value="person" 
+              className="px-6 py-3 rounded-xl font-medium data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
+            >
+              👤 รายบุคคล
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* SUMMARY CARDS */}
         <SummaryCards 
@@ -169,15 +199,23 @@ export default function AttendanceDashboard() {
         />
 
         {/* DAY TAB */}
-        <TabsContent value="day" className="space-y-4">
-          <Card className="bg-white shadow-sm border-0 rounded-2xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" /> เลือกวัน
+        <TabsContent value="day" className="space-y-6">
+          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
+                <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl">
+                  <Calendar className="h-5 w-5 text-indigo-600" />
+                </div>
+                เลือกวันที่
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex gap-3">
-              <Input type="date" value={selectedDate} onChange={(e)=>setSelectedDate(e.target.value)} className="w-56" />
+            <CardContent>
+              <Input 
+                type="date" 
+                value={selectedDate} 
+                onChange={(e)=>setSelectedDate(e.target.value)} 
+                className="w-64 h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-indigo-400 focus:ring-indigo-400 bg-white/50 backdrop-blur-sm" 
+              />
             </CardContent>
           </Card>
 
@@ -189,33 +227,45 @@ export default function AttendanceDashboard() {
         </TabsContent>
 
         {/* MONTH TAB */}
-        <TabsContent value="month" className="space-y-4">
-          <Card className="bg-white shadow-sm border-0 rounded-2xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" /> เลือกช่วงเดือน
+        <TabsContent value="month" className="space-y-6">
+          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
+                <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl">
+                  <Calendar className="h-5 w-5 text-emerald-600" />
+                </div>
+                เลือกช่วงเดือน
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">ปี</label>
-                <Input type="number" value={selectedMonthYear} onChange={e=>setSelectedMonthYear(parseInt(e.target.value||`${now.getFullYear()}`))} className="w-32" />
+            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">ปี</label>
+                <Input 
+                  type="number" 
+                  value={selectedMonthYear} 
+                  onChange={e=>setSelectedMonthYear(parseInt(e.target.value||`${now.getFullYear()}`))} 
+                  className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 focus:ring-emerald-400 bg-white/50 backdrop-blur-sm" 
+                />
               </div>
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">จากเดือน</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">จากเดือน</label>
                 <Select value={String(selectedFromMonth)} onValueChange={(v)=>setSelectedFromMonth(parseInt(v))}>
-                  <SelectTrigger className="rounded-lg border-gray-200"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {thaiMonths.map(m=>(<SelectItem key={m.value} value={String(m.value)}>{m.label}</SelectItem>))}
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 bg-white/50 backdrop-blur-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-slate-200">
+                    {thaiMonths.map(m=>(<SelectItem key={m.value} value={String(m.value)} className="rounded-lg">{m.label}</SelectItem>))}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">ถึงเดือน</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">ถึงเดือน</label>
                 <Select value={String(selectedToMonth)} onValueChange={(v)=>setSelectedToMonth(parseInt(v))}>
-                  <SelectTrigger className="rounded-lg border-gray-200"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {thaiMonths.map(m=>(<SelectItem key={m.value} value={String(m.value)}>{m.label}</SelectItem>))}
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 bg-white/50 backdrop-blur-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-slate-200">
+                    {thaiMonths.map(m=>(<SelectItem key={m.value} value={String(m.value)} className="rounded-lg">{m.label}</SelectItem>))}
                   </SelectContent>
                 </Select>
               </div>
@@ -230,37 +280,49 @@ export default function AttendanceDashboard() {
         </TabsContent>
 
         {/* PERSON TAB */}
-        <TabsContent value="person" className="space-y-4">
-          <Card className="bg-white shadow-sm border-0 rounded-2xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" /> เลือกบุคคลและช่วงเวลา
+        <TabsContent value="person" className="space-y-6">
+          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
+                <div className="p-2 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl">
+                  <Users className="h-5 w-5 text-purple-600" />
+                </div>
+                เลือกบุคคลและช่วงเวลา
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid md:grid-cols-4 gap-3">
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">ชื่อ</label>
+            <CardContent className="grid md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">ชื่อพนักงาน</label>
                 <Select value={selectedEmployee} onValueChange={(v)=>setSelectedEmployee(v as EmpName)}>
-                  <SelectTrigger className="rounded-lg border-gray-200"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {EMPLOYEES.map(n=>(<SelectItem key={n} value={n}>{n}</SelectItem>))}
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 bg-white/50 backdrop-blur-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-slate-200">
+                    {EMPLOYEES.map(n=>(<SelectItem key={n} value={n} className="rounded-lg">👤 {n}</SelectItem>))}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">ช่วง</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">ช่วงเวลา</label>
                 <Select value={personRange} onValueChange={(v)=>setPersonRange(v as any)}>
-                  <SelectTrigger className="rounded-lg border-gray-200"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="day">วัน</SelectItem>
-                    <SelectItem value="month">เดือน</SelectItem>
-                    <SelectItem value="year">ปี</SelectItem>
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 bg-white/50 backdrop-blur-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-slate-200">
+                    <SelectItem value="day" className="rounded-lg">📅 รายวัน</SelectItem>
+                    <SelectItem value="month" className="rounded-lg">📊 รายเดือน</SelectItem>
+                    <SelectItem value="year" className="rounded-lg">📈 รายปี</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">ค่าอ้างอิง</label>
-                <Input value={personOn} onChange={e=>setPersonOn(e.target.value)} placeholder="วัน: YYYY-MM-DD / เดือน: YYYY-MM / ปี: YYYY" />
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">ค่าอ้างอิง</label>
+                <Input 
+                  value={personOn} 
+                  onChange={e=>setPersonOn(e.target.value)} 
+                  placeholder="เดือน: 2025-08"
+                  className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 focus:ring-purple-400 bg-white/50 backdrop-blur-sm"
+                />
               </div>
             </CardContent>
           </Card>

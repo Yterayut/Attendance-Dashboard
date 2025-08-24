@@ -1,7 +1,7 @@
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { Skeleton } from './ui/skeleton';
-import { CheckCircle, XCircle, AlertCircle, TrendingUp } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, TrendingUp, Users } from 'lucide-react';
 
 interface SummaryCardsProps {
   summary: {
@@ -19,44 +19,60 @@ export function SummaryCards({ summary, isLoading }: SummaryCardsProps) {
       title: 'เข้างาน',
       value: summary.present,
       total: summary.total,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-emerald-700',
+      bgColor: 'bg-gradient-to-br from-emerald-50 to-green-50',
+      iconBg: 'bg-gradient-to-br from-emerald-100 to-emerald-200',
       icon: CheckCircle,
-      borderColor: 'border-green-100',
+      borderColor: 'border-emerald-200',
+      shadowColor: 'hover:shadow-emerald-100/50',
     },
     {
       title: 'ลาป่วย/ลากิจ',
       value: summary.leave,
       total: summary.total,
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      color: 'text-rose-700',
+      bgColor: 'bg-gradient-to-br from-rose-50 to-red-50',
+      iconBg: 'bg-gradient-to-br from-rose-100 to-rose-200',
       icon: XCircle,
-      borderColor: 'border-red-100',
+      borderColor: 'border-rose-200',
+      shadowColor: 'hover:shadow-rose-100/50',
     },
     {
       title: 'ไม่รายงาน',
       value: summary.notReported,
       total: summary.total,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
-      icon: AlertCircle,
-      borderColor: 'border-yellow-100',
+      color: 'text-amber-700',
+      bgColor: 'bg-gradient-to-br from-amber-50 to-yellow-50',
+      iconBg: 'bg-gradient-to-br from-amber-100 to-amber-200',
+      icon: AlertTriangle,
+      borderColor: 'border-amber-200',
+      shadowColor: 'hover:shadow-amber-100/50',
     },
   ];
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="bg-white shadow-sm border-0 rounded-2xl">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-8 w-12" />
-                  <Skeleton className="h-3 w-16" />
+          <Card key={i} className="bg-gradient-to-br from-gray-50 to-gray-100 shadow-lg border-0 rounded-3xl">
+            <CardContent className="p-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 opacity-5">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-400 to-transparent animate-pulse"></div>
+              </div>
+              
+              <div className="flex items-center justify-between relative z-10">
+                <div className="space-y-4">
+                  <Skeleton className="h-4 w-24" />
+                  <div className="flex items-baseline gap-3">
+                    <Skeleton className="h-10 w-16" />
+                    <Skeleton className="h-6 w-8" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="h-7 w-12 rounded-full" />
+                    <Skeleton className="h-4 w-20" />
+                  </div>
                 </div>
-                <Skeleton className="h-12 w-12 rounded-lg" />
+                <Skeleton className="h-16 w-16 rounded-2xl" />
               </div>
             </CardContent>
           </Card>
@@ -66,7 +82,7 @@ export function SummaryCards({ summary, isLoading }: SummaryCardsProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {cards.map((card) => {
         const percentage = summary.total > 0 ? Math.round((card.value / summary.total) * 100) : 0;
         const Icon = card.icon;
@@ -74,38 +90,49 @@ export function SummaryCards({ summary, isLoading }: SummaryCardsProps) {
         return (
           <Card 
             key={card.title} 
-            className={`bg-white shadow-sm border-0 rounded-2xl hover:shadow-md transition-shadow duration-200 ${card.borderColor} border-l-4`}
+            className={`${card.bgColor} shadow-lg border-0 rounded-3xl hover:shadow-xl ${card.shadowColor} transition-all duration-300 hover:scale-105 ${card.borderColor} border border-opacity-20 backdrop-blur-sm`}
           >
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600">{card.title}</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className={`text-2xl ${card.color}`}>
+            <CardContent className="p-8 relative overflow-hidden">
+              {/* Background Pattern */}
+              <div className="absolute top-0 right-0 w-24 h-24 opacity-10">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-current to-transparent"></div>
+              </div>
+              
+              <div className="flex items-center justify-between relative z-10">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-gray-600 uppercase tracking-wide">{card.title}</p>
+                  </div>
+                  
+                  <div className="flex items-baseline gap-3">
+                    <span className={`text-4xl font-bold ${card.color} leading-none`}>
                       {card.value}
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-lg text-gray-500 font-medium">
                       /{summary.total}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  
+                  <div className="flex items-center gap-3">
                     <Badge 
                       variant="secondary" 
-                      className={`${card.bgColor} ${card.color} border-0 text-xs`}
+                      className={`${card.iconBg} ${card.color} border-0 text-sm font-semibold px-3 py-1 rounded-full shadow-sm`}
                     >
                       {percentage}%
                     </Badge>
                     {percentage > 0 && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        <TrendingUp className="h-3 w-3 mr-1" />
-                        {card.title === 'เข้างาน' ? 'ดี' : card.title === 'ลาป่วย/ลากิจ' ? 'ปกติ' : 'ต้องติดตาม'}
+                      <div className="flex items-center text-sm text-gray-600 font-medium">
+                        <TrendingUp className="h-4 w-4 mr-1" />
+                        <span className="text-xs">
+                          {card.title === 'เข้างาน' ? 'เป้าหมายดี' : card.title === 'ลาป่วย/ลากิจ' ? 'อยู่ในเกณฑ์' : 'ต้องติดตาม'}
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
                 
-                <div className={`p-3 ${card.bgColor} rounded-lg`}>
-                  <Icon className={`h-6 w-6 ${card.color}`} />
+                <div className={`p-4 ${card.iconBg} rounded-2xl shadow-lg backdrop-blur-sm border border-white/20`}>
+                  <Icon className={`h-8 w-8 ${card.color} drop-shadow-sm`} />
                 </div>
               </div>
             </CardContent>
