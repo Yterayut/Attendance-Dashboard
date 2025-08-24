@@ -147,7 +147,7 @@ export default function AttendanceDashboard() {
   ];
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen w-full bg-gray-50 p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="h-5 w-5 text-gray-500" />
