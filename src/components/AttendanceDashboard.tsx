@@ -57,18 +57,46 @@ export default function AttendanceDashboard() {
 
   // ===== Data buckets =====
   const [daySummary, setDaySummary] = useState<DaySummary|null>(null);
+  const [dailyEmployees, setDailyEmployees] = useState<PersonItem[]>([]);
   const [monthDays, setMonthDays] = useState<DaySummary[]>([]);
   const [personItems, setPersonItems] = useState<PersonItem[]>([]);
 
   // ===== Effects: fetch APIs =====
-  // Day
+  // Day - fetch both summary and detailed employees
   useEffect(()=>{
     if (tab!=='day') return;
     setIsLoading(true);
-    fetch(`${API}?route=summary&date=${selectedDate}`)
+    
+    // Fetch summary for cards
+    const summaryPromise = fetch(`${API}?route=summary&date=${selectedDate}`)
       .then(r=>r.json())
-      .then(j=>setDaySummary(j.data || null))
-      .catch(()=>setDaySummary(null))
+      .then(j=>j.data || null);
+    
+    // Fetch all employees for the day to get actual names
+    const employeesPromise = Promise.all(
+      EMPLOYEES.map(emp => 
+        fetch(`${API}?route=person&name=${encodeURIComponent(emp)}&range=day&on=${selectedDate}`)
+          .then(r=>r.json())
+          .then(j=>{
+            const items = j?.data?.items || [];
+            return items.map((item:any) => ({
+              ...item,
+              name: emp, // Make sure name is included
+            }));
+          })
+          .catch(()=>[])
+      )
+    ).then(results => results.flat());
+
+    Promise.all([summaryPromise, employeesPromise])
+      .then(([summary, employees]) => {
+        setDaySummary(summary);
+        setDailyEmployees(employees);
+      })
+      .catch(()=>{
+        setDaySummary(null);
+        setDailyEmployees([]);
+      })
       .finally(()=>setIsLoading(false));
   },[API, tab, selectedDate]);
 
@@ -129,15 +157,17 @@ export default function AttendanceDashboard() {
     return { ...agg, total: agg.present+agg.leave+agg.notReported };
   },[tab, daySummary, monthDays]);
 
-  // DailyTable: ต้องการ array ของ records {date, employee, status}
-  // เราแปลงจาก summary ให้เป็น record ปลอมตามจำนวน เพื่อให้ badge/count ถูกต้อง
+  // DailyTable: ใช้ข้อมูลจริงจาก API
   const dailyTableData = useMemo(()=>{
-    if (tab==='day' && daySummary) {
-      const recs:any[] = [];
-      for (let i=0;i<daySummary.present;i++) recs.push({date: daySummary.date, employee: '—', status:'present'});
-      for (let i=0;i<daySummary.leave;i++) recs.push({date: daySummary.date, employee: '—', status:'leave'});
-      for (let i=0;i<daySummary.notReported;i++) recs.push({date: daySummary.date, employee: '—', status:'not_reported'});
-      return recs;
+    if (tab==='day') {
+      // Use actual employee data from API
+      return dailyEmployees.map(emp => ({
+        date: emp.date,
+        employee: emp.name,
+        status: emp.status,
+        checkIn: emp.checkIn,
+        checkOut: emp.checkOut,
+      }));
     }
     if (tab==='month') {
       const recs:any[] = [];
@@ -150,7 +180,7 @@ export default function AttendanceDashboard() {
     }
     // person tab uses PersonView
     return [];
-  },[tab, daySummary, monthDays, selectedFromMonth, selectedToMonth, selectedMonthYear]);
+  },[tab, dailyEmployees, monthDays, selectedFromMonth, selectedToMonth, selectedMonthYear]);
 
   // PersonView requires allData listเพื่อทำ dropdown รายชื่อ
   const allDataForPerson = useMemo(()=>{
@@ -320,11 +350,13 @@ export default function AttendanceDashboard() {
           </TabsList>
         </div>
 
-        {/* SUMMARY CARDS */}
-        <SummaryCards 
-          summary={summaryForCards}
-          isLoading={isLoading}
-        />
+        {/* SUMMARY CARDS - Only for day and month tabs */}
+        {tab !== 'person' && (
+          <SummaryCards 
+            summary={summaryForCards}
+            isLoading={isLoading}
+          />
+        )}
 
         {/* DAY TAB */}
         <TabsContent value="day" className="space-y-6">

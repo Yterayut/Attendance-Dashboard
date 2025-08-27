@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Badge } from './ui/badge';
 import { Skeleton } from './ui/skeleton';
-import { Calendar, Users } from 'lucide-react';
+import { Calendar, Users, UserCheck, UserX, AlertTriangle } from 'lucide-react';
 
 interface DailyTableProps {
   data: Array<{
@@ -18,58 +17,56 @@ interface DailyTableProps {
 }
 
 export function DailyTable({ data, period, isLoading }: DailyTableProps) {
-  // Group data by date
-  const dailyStats = useMemo(() => {
-    const grouped = data.reduce((acc, record) => {
-      const date = record.date;
-      if (!acc[date]) {
-        acc[date] = {
-          date,
-          present: 0,
-          leave: 0,
-          notReported: 0,
-          total: 0,
-        };
-      }
-      
-      acc[date][record.status === 'present' ? 'present' : 
-                record.status === 'leave' ? 'leave' : 'notReported']++;
-      acc[date].total++;
-      
-      return acc;
-    }, {} as Record<string, any>);
+  // Group employees by status for the selected date
+  const employeesByStatus = useMemo(() => {
+    const present: string[] = [];
+    const leave: string[] = [];
+    const notReported: string[] = [];
     
-    return Object.values(grouped).sort((a: any, b: any) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    data.forEach(record => {
+      switch (record.status) {
+        case 'present':
+          present.push(record.employee);
+          break;
+        case 'leave':
+          leave.push(record.employee);
+          break;
+        case 'not_reported':
+          notReported.push(record.employee);
+          break;
+      }
+    });
+    
+    return { present, leave, notReported };
   }, [data]);
 
-  const getStatusBadge = (status: string, count: number) => {
-    const variants = {
-      present: { color: 'bg-green-50 text-green-700 border-green-200', label: 'เข้างาน' },
-      leave: { color: 'bg-red-50 text-red-700 border-red-200', label: 'ลา' },
-      notReported: { color: 'bg-yellow-50 text-yellow-700 border-yellow-200', label: 'ไม่รายงาน' },
-    };
-    
-    const variant = variants[status as keyof typeof variants];
-    if (!variant || count === 0) return null;
-    
-    return (
-      <Badge className={`${variant.color} border text-xs`}>
-        {count} {variant.label}
-      </Badge>
-    );
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('th-TH', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      weekday: 'short',
-    });
-  };
+  const StatusSection = ({ title, employees, icon, bgColor, textColor }: {
+    title: string;
+    employees: string[];
+    icon: React.ReactNode;
+    bgColor: string;
+    textColor: string;
+  }) => (
+    <div className={`p-4 rounded-xl border ${bgColor} ${textColor}`}>
+      <div className="flex items-center gap-2 mb-3">
+        {icon}
+        <h3 className="font-semibold text-sm">
+          {title} ({employees.filter(emp => emp !== '—').length} คน)
+        </h3>
+      </div>
+      {employees.length > 0 ? (
+        <div className="space-y-2">
+          {employees.filter(emp => emp !== '—').map((employee, index) => (
+            <div key={index} className={`px-3 py-2 rounded-lg bg-white/50 text-sm font-medium`}>
+              {employee}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-xs opacity-70">ไม่มีรายชื่อ</div>
+      )}
+    </div>
+  );
 
   if (isLoading) {
     return (
@@ -98,13 +95,13 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
     );
   }
 
-  if (dailyStats.length === 0) {
+  if (data.length === 0) {
     return (
       <Card className="bg-white shadow-sm border-0 rounded-2xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            ข้อมูลรายวัน
+            ข้อมูลรายวัน ({period === 'day' ? 'รายวัน' : period === 'month' ? 'รายเดือน' : 'รายปี'})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -127,47 +124,30 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50/50">
-                <TableHead className="text-gray-700">วันที่</TableHead>
-                <TableHead className="text-gray-700">เข้างาน</TableHead>
-                <TableHead className="text-gray-700">ลา</TableHead>
-                <TableHead className="text-gray-700">ไม่รายงาน</TableHead>
-                <TableHead className="text-gray-700">รวม</TableHead>
-                <TableHead className="text-gray-700">สถานะ</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {dailyStats.map((day: any) => (
-                <TableRow key={day.date} className="hover:bg-gray-50/50">
-                  <TableCell className="font-medium text-gray-900">
-                    {formatDate(day.date)}
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-green-600">{day.present}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-red-600">{day.leave}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-yellow-600">{day.notReported}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-gray-900">{day.total}</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-1 flex-wrap">
-                      {getStatusBadge('present', day.present)}
-                      {getStatusBadge('leave', day.leave)}
-                      {getStatusBadge('notReported', day.notReported)}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <StatusSection
+            title="เข้างาน"
+            employees={employeesByStatus.present}
+            icon={<UserCheck className="h-4 w-4" />}
+            bgColor="bg-green-50 border-green-200"
+            textColor="text-green-800"
+          />
+          
+          <StatusSection
+            title="ลาป่วย/ลากิจ"
+            employees={employeesByStatus.leave}
+            icon={<UserX className="h-4 w-4" />}
+            bgColor="bg-red-50 border-red-200"
+            textColor="text-red-800"
+          />
+          
+          <StatusSection
+            title="ไม่รายงาน"
+            employees={employeesByStatus.notReported}
+            icon={<AlertTriangle className="h-4 w-4" />}
+            bgColor="bg-yellow-50 border-yellow-200"
+            textColor="text-yellow-800"
+          />
         </div>
       </CardContent>
     </Card>
