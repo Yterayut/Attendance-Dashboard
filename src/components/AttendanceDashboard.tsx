@@ -9,6 +9,7 @@ import { Button } from './ui/button';
 import { Calendar, Clock, Users, CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SummaryCards } from './SummaryCards';
 import { DailyTable } from './DailyTable';
+import { MonthlyDaysTable } from './MonthlyDaysTable';
 import { PersonView } from './PersonView';
 
 const API = import.meta.env.VITE_API_URL as string;
@@ -531,9 +532,8 @@ export default function AttendanceDashboard() {
             </CardContent>
           </Card>
 
-          <DailyTable 
-            data={dailyTableData}
-            period="month"
+          <MonthlyDaysTable 
+            data={monthDays}
             isLoading={isLoading}
           />
         </TabsContent>
