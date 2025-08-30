@@ -653,7 +653,7 @@ export default function AttendanceDashboard() {
             </CardContent>
           </Card>
 
-          <div id="dashboard-content">
+          <div id="dashboard-content" data-export="true">
             <DailyTable 
               data={filteredDailyEmployees}
               period="day"
@@ -742,10 +742,12 @@ export default function AttendanceDashboard() {
             </CardContent>
           </Card>
 
-          <MonthlyDaysTable 
-            data={monthDays}
-            isLoading={isLoading}
-          />
+          <div data-export="true">
+            <MonthlyDaysTable 
+              data={monthDays}
+              isLoading={isLoading}
+            />
+          </div>
         </TabsContent>
 
         {/* PERSON TAB */}

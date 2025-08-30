@@ -58,29 +58,54 @@ export const exportToExcel = (data: ExportData[], filename: string = 'attendance
 
 export const exportToPDF = async (elementId: string, filename: string = 'attendance_report') => {
   try {
-    const element = document.getElementById(elementId);
+    // Wait a bit for the DOM to be ready
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    let element = document.getElementById(elementId);
+    
+    // If specific element not found, try to find the main content
     if (!element) {
-      throw new Error('Element not found');
+      // Try alternative selectors
+      element = document.querySelector('[data-export="true"]') as HTMLElement ||
+                document.querySelector('.space-y-6') as HTMLElement ||
+                document.querySelector('main') as HTMLElement ||
+                document.body;
     }
 
-    // Create canvas from the element
+    if (!element) {
+      throw new Error('No suitable element found for PDF export');
+    }
+
+    // Ensure element is visible and has content
+    if (element.offsetWidth === 0 || element.offsetHeight === 0) {
+      throw new Error('Element is not visible or has no content');
+    }
+
+    // Create canvas from the element with better options
     const canvas = await html2canvas(element, {
-      scale: 2,
+      scale: 1.5,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
     });
 
-    const imgData = canvas.toDataURL('image/png');
+    const imgData = canvas.toDataURL('image/png', 0.95);
     
     // Calculate dimensions for PDF
     const imgWidth = 210; // A4 width in mm
     const pageHeight = 295; // A4 height in mm
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
 
     // Create PDF
     const pdf = new jsPDF('p', 'mm', 'a4');
+    
+    let heightLeft = imgHeight;
     let position = 0;
 
     // Add first page
@@ -102,9 +127,23 @@ export const exportToPDF = async (elementId: string, filename: string = 'attenda
     // Save PDF
     pdf.save(finalFilename);
     
+    console.log('PDF exported successfully:', finalFilename);
+    
   } catch (error) {
     console.error('Error exporting PDF:', error);
-    alert('เกิดข้อผิดพลาดในการ Export PDF กรุณาลองใหม่อีกครั้ง');
+    
+    // More specific error messages
+    let errorMessage = 'เกิดข้อผิดพลาดในการ Export PDF กรุณาลองใหม่อีกครั้ง';
+    
+    if (error instanceof Error) {
+      if (error.message.includes('Element not found') || error.message.includes('No suitable element')) {
+        errorMessage = 'ไม่พบข้อมูลที่จะ Export กรุณาลองใหม่อีกครั้ง';
+      } else if (error.message.includes('not visible')) {
+        errorMessage = 'ข้อมูลยังไม่พร้อม กรุณารอสักครู่แล้วลองใหม่';
+      }
+    }
+    
+    alert(errorMessage);
   }
 };
 
