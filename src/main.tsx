@@ -8,9 +8,12 @@ import './index.css'
 import './figma/styles/globals.css'
 
 import AttendanceDashboard from './components/AttendanceDashboard'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AttendanceDashboard />
+    <ThemeProvider>
+      <AttendanceDashboard />
+    </ThemeProvider>
   </React.StrictMode>
 )

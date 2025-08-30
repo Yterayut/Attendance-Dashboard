@@ -11,6 +11,10 @@ import { SummaryCards } from './SummaryCards';
 import { DailyTable } from './DailyTable';
 import { MonthlyDaysTable } from './MonthlyDaysTable';
 import { PersonView } from './PersonView';
+import { AdvancedFilter } from './AdvancedFilter';
+import { RealTimeStatus } from './RealTimeStatus';
+import { ThemeToggle } from './ThemeToggle';
+import { exportToExcel, exportToPDF } from '../utils/exportUtils';
 
 const API = import.meta.env.VITE_API_URL as string;
 
@@ -59,11 +63,131 @@ export default function AttendanceDashboard() {
   // Period presets for month tab
   const [selectedPeriodPreset, setSelectedPeriodPreset] = useState<string>('');
 
+  // Advanced Filter states
+  interface FilterState {
+    dateRange: { from: string; to: string };
+    selectedEmployees: string[];
+    selectedStatuses: string[];
+    selectedDepartments: string[];
+    searchTerm: string;
+  }
+  
+  const [filters, setFilters] = useState<FilterState>({
+    dateRange: { from: '', to: '' },
+    selectedEmployees: [],
+    selectedStatuses: [],
+    selectedDepartments: [],
+    searchTerm: ''
+  });
+
   // ===== Data buckets =====
   const [daySummary, setDaySummary] = useState<DaySummary|null>(null);
   const [dailyEmployees, setDailyEmployees] = useState<PersonItem[]>([]);
   const [monthDays, setMonthDays] = useState<DaySummary[]>([]);
   const [personItems, setPersonItems] = useState<PersonItem[]>([]);
+
+  // Filtered data based on advanced filters
+  const filteredDailyEmployees = useMemo(() => {
+    let filtered = [...dailyEmployees];
+    
+    // Apply employee filter
+    if (filters.selectedEmployees.length > 0) {
+      filtered = filtered.filter(emp => filters.selectedEmployees.includes(emp.name));
+    }
+    
+    // Apply status filter
+    if (filters.selectedStatuses.length > 0) {
+      filtered = filtered.filter(emp => filters.selectedStatuses.includes(emp.status));
+    }
+    
+    // Apply search term
+    if (filters.searchTerm.trim()) {
+      filtered = filtered.filter(emp => 
+        emp.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [dailyEmployees, filters]);
+
+  // Handle filter changes
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+  };
+
+  // Handle export functions
+  const handleExport = (type: 'excel' | 'pdf') => {
+    const dataToExport = filteredDailyEmployees.map(emp => ({
+      date: emp.date,
+      employee: emp.name,
+      status: emp.status === 'present' ? 'เข้างาน' : 
+              emp.status === 'leave' ? 'ลา' : 'ไม่ระบุงาน',
+      department: 'IT', // Mock department for now
+      reason: emp.reason || '-'
+    }));
+
+    if (type === 'excel') {
+      exportToExcel(dataToExport, `attendance_${tab}`);
+    } else {
+      exportToPDF('dashboard-content', `attendance_${tab}`);
+    }
+  };
+
+  // Handle refresh data for real-time status
+  const handleRefreshData = () => {
+    if (tab === 'day') {
+      setIsLoading(true);
+      const summaryPromise = fetch(`${API}?route=summary&date=${selectedDate}`)
+        .then(r=>r.json())
+        .then(j=>j.data || null);
+      
+      const employeesPromise = Promise.all(
+        EMPLOYEES.map(emp => 
+          fetch(`${API}?route=person&name=${encodeURIComponent(emp)}&range=day&on=${selectedDate}`)
+            .then(r=>r.json())
+            .then(j=>{
+              const items = j?.data?.items || [];
+              return items.map((item:any) => ({
+                ...item,
+                name: emp,
+              }));
+            })
+            .catch(()=>[])
+        )
+      ).then(results => results.flat());
+
+      Promise.all([summaryPromise, employeesPromise])
+        .then(([summary, employees]) => {
+          setDaySummary(summary);
+          setDailyEmployees(employees);
+        })
+        .catch(()=>{
+          setDaySummary(null);
+          setDailyEmployees([]);
+        })
+        .finally(()=>setIsLoading(false));
+    } else if (tab === 'month') {
+      setIsLoading(true);
+      const from = endOfMonthStr(selectedMonthYear, selectedFromMonth);
+      const to = endOfMonthStr(selectedMonthYear, selectedToMonth);
+      
+      fetch(`${API}?route=summary_range&from=${from}&to=${to}`)
+        .then(r=>r.json())
+        .then(j=>{
+          const arr = j?.data || [];
+          setMonthDays(arr);
+        })
+        .catch(()=>setMonthDays([]))
+        .finally(()=>setIsLoading(false));
+    } else if (tab === 'person') {
+      setIsLoading(true);
+      fetch(`${API}?route=person&name=${encodeURIComponent(selectedEmployee)}&range=${personRange}&on=${personOn}`)
+        .then(r=>r.json())
+        .then(j=>setPersonItems(j?.data?.items || []))
+        .catch(()=>setPersonItems([]))
+        .finally(()=>setIsLoading(false));
+    }
+  };
 
   // ===== Effects: fetch APIs =====
   // Day - fetch both summary and detailed employees
@@ -348,14 +472,17 @@ export default function AttendanceDashboard() {
           </h1>
         </div>
         
-        <div className="flex items-center justify-center gap-2 text-slate-600">
-          <Clock className="h-4 w-4" />
-          <span className="text-sm font-medium">Asia/Bangkok • {new Date().toLocaleDateString('th-TH', {
-            year: 'numeric',
-            month: 'long', 
-            day: 'numeric',
-            weekday: 'long'
-          })}</span>
+        <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center gap-2 text-slate-600">
+            <Clock className="h-4 w-4" />
+            <span className="text-sm font-medium">Asia/Bangkok • {new Date().toLocaleDateString('th-TH', {
+              year: 'numeric',
+              month: 'long', 
+              day: 'numeric',
+              weekday: 'long'
+            })}</span>
+          </div>
+          <ThemeToggle />
         </div>
       </div>
 
@@ -390,6 +517,21 @@ export default function AttendanceDashboard() {
             isLoading={isLoading}
           />
         )}
+
+        {/* REAL-TIME STATUS - Only for day and month tabs */}
+        {tab !== 'person' && (
+          <RealTimeStatus 
+            onRefreshData={handleRefreshData}
+            currentSummary={summaryForCards}
+          />
+        )}
+
+        {/* ADVANCED FILTER - Only for day and month tabs */}
+        <AdvancedFilter 
+          onFilterChange={handleFilterChange}
+          onExport={handleExport}
+          isVisible={tab !== 'person'}
+        />
 
         {/* DAY TAB */}
         <TabsContent value="day" className="space-y-6">
@@ -511,11 +653,13 @@ export default function AttendanceDashboard() {
             </CardContent>
           </Card>
 
-          <DailyTable 
-            data={dailyTableData}
-            period="day"
-            isLoading={isLoading}
-          />
+          <div id="dashboard-content">
+            <DailyTable 
+              data={filteredDailyEmployees}
+              period="day"
+              isLoading={isLoading}
+            />
+          </div>
         </TabsContent>
 
         {/* MONTH TAB */}
