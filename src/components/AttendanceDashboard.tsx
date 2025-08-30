@@ -56,6 +56,9 @@ export default function AttendanceDashboard() {
   const [personRange, setPersonRange] = useState<'day'|'month'|'year'>('month');
   const [personOn, setPersonOn] = useState<string>(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`);
 
+  // Period presets for month tab
+  const [selectedPeriodPreset, setSelectedPeriodPreset] = useState<string>('');
+
   // ===== Data buckets =====
   const [daySummary, setDaySummary] = useState<DaySummary|null>(null);
   const [dailyEmployees, setDailyEmployees] = useState<PersonItem[]>([]);
@@ -222,6 +225,35 @@ export default function AttendanceDashboard() {
 
   const openDatePicker = () => {
     setIsDatePickerOpen(true);
+  };
+
+  // Period preset handlers
+  const periodPresets = [
+    { id: 'q1', label: 'ไตรมาส 1 (ม.ค.-มี.ค.)', fromMonth: 0, toMonth: 2 },
+    { id: 'q2', label: 'ไตรมาส 2 (เม.ษ.-มิ.ย.)', fromMonth: 3, toMonth: 5 },
+    { id: 'q3', label: 'ไตรมาส 3 (ก.ค.-ก.ย.)', fromMonth: 6, toMonth: 8 },
+    { id: 'q4', label: 'ไตรมาส 4 (ต.ค.-ธ.ค.)', fromMonth: 9, toMonth: 11 },
+    { id: 'h1', label: 'ครึ่งแรก (ม.ค.-มิ.ย.)', fromMonth: 0, toMonth: 5 },
+    { id: 'h2', label: 'ครึ่งหลัง (ก.ค.-ธ.ค.)', fromMonth: 6, toMonth: 11 },
+  ];
+
+  const handlePeriodPresetSelect = (preset: typeof periodPresets[0]) => {
+    setSelectedFromMonth(preset.fromMonth);
+    setSelectedToMonth(preset.toMonth);
+    setSelectedPeriodPreset(preset.label);
+  };
+
+  // Get display text for current period
+  const getCurrentPeriodDisplay = () => {
+    if (selectedPeriodPreset) return selectedPeriodPreset;
+    
+    const from = thaiMonths[selectedFromMonth]?.label || 'มกราคม';
+    const to = thaiMonths[selectedToMonth]?.label || 'สิงหาคม';
+    
+    if (selectedFromMonth === selectedToMonth) {
+      return from;
+    }
+    return `${from} ถึง ${to}`;
   };
 
 
@@ -509,7 +541,7 @@ export default function AttendanceDashboard() {
               </div>
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-slate-700">จากเดือน</label>
-                <Select value={String(selectedFromMonth)} onValueChange={(v)=>setSelectedFromMonth(parseInt(v))}>
+                <Select value={String(selectedFromMonth)} onValueChange={(v)=>{setSelectedFromMonth(parseInt(v)); setSelectedPeriodPreset('');}}>
                   <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 bg-white/50 backdrop-blur-sm">
                     <SelectValue />
                   </SelectTrigger>
@@ -520,7 +552,7 @@ export default function AttendanceDashboard() {
               </div>
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-slate-700">ถึงเดือน</label>
-                <Select value={String(selectedToMonth)} onValueChange={(v)=>setSelectedToMonth(parseInt(v))}>
+                <Select value={String(selectedToMonth)} onValueChange={(v)=>{setSelectedToMonth(parseInt(v)); setSelectedPeriodPreset('');}}>
                   <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 bg-white/50 backdrop-blur-sm">
                     <SelectValue />
                   </SelectTrigger>
@@ -528,6 +560,40 @@ export default function AttendanceDashboard() {
                     {thaiMonths.map(m=>(<SelectItem key={m.value} value={String(m.value)} className="rounded-lg">{m.label}</SelectItem>))}
                   </SelectContent>
                 </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Period Presets Section */}
+          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium text-slate-700 flex items-center gap-2">
+                  <span>ช่วงเดือนที่ได้:</span>
+                </h3>
+                
+                <div className="flex flex-wrap gap-3">
+                  {periodPresets.map((preset) => (
+                    <button
+                      key={preset.id}
+                      onClick={() => handlePeriodPresetSelect(preset)}
+                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                        selectedPeriodPreset === preset.label
+                          ? 'bg-emerald-600 text-white shadow-lg'
+                          : 'bg-white/60 text-slate-700 border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50'
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-4 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                  <div className="flex items-center gap-2 text-emerald-700">
+                    <span className="text-lg">📋</span>
+                    <span className="font-medium">แสดงข้อมูลช่วงเดือน: {getCurrentPeriodDisplay()} {selectedMonthYear + 543}</span>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
