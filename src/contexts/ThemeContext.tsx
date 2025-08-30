@@ -177,14 +177,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     const root = document.documentElement;
     
-    // Remove all theme classes
+    // Remove all theme classes - use Tailwind's dark mode
     root.classList.remove('light', 'dark');
     Object.keys(customThemes).forEach(theme => {
       root.classList.remove(`theme-${theme}`);
     });
     
-    // Apply current theme classes
-    root.classList.add(resolvedTheme);
+    // Apply current theme classes - use Tailwind's dark class
+    if (resolvedTheme === 'dark') {
+      root.classList.add('dark');
+    }
     root.classList.add(`theme-${config.customTheme}`);
     
     // Set CSS custom properties for the current theme

@@ -462,18 +462,18 @@ export default function AttendanceDashboard() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6 space-y-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-800 dark:to-gray-900 p-6 space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/60 backdrop-blur-md rounded-full shadow-lg border border-white/20">
-          <Users className="h-6 w-6 text-indigo-600" />
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-full shadow-lg border border-white/20 dark:border-gray-600/20">
+          <Users className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
             ระบบบริหารการเข้างาน
           </h1>
         </div>
         
         <div className="flex items-center justify-center gap-4">
-          <div className="flex items-center gap-2 text-slate-600">
+          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
             <Clock className="h-4 w-4" />
             <span className="text-sm font-medium">Asia/Bangkok • {new Date().toLocaleDateString('th-TH', {
               year: 'numeric',
@@ -488,7 +488,7 @@ export default function AttendanceDashboard() {
 
       <Tabs value={tab} onValueChange={(v)=>setTab(v as any)}>
         <div className="flex justify-center mb-8">
-          <TabsList className="bg-white/60 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl p-2">
+          <TabsList className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border border-white/20 dark:border-gray-600/20 shadow-xl rounded-2xl p-2">
             <TabsTrigger 
               value="day" 
               className="px-6 py-3 rounded-xl font-medium data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
