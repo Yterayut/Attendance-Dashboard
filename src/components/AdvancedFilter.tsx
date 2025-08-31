@@ -100,14 +100,14 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
   if (!isVisible) return null;
 
   return (
-    <Card className="bg-white/80 backdrop-blur-md shadow-lg border-0 rounded-2xl mb-4">
+    <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-lg border-0 rounded-2xl mb-4">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Filter className="h-5 w-5 text-blue-600" />
+          <CardTitle className="flex items-center gap-2 text-lg text-gray-900 dark:text-white">
+            <Filter className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             ตัวกรองขั้นสูง
             {getActiveFilterCount() > 0 && (
-              <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+              <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-800/40 dark:text-blue-300">
                 {getActiveFilterCount()} ตัวกรอง
               </Badge>
             )}
@@ -115,7 +115,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
           <div className="flex gap-2">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="bg-white/50">
+                <Button variant="outline" size="sm" className="bg-white/50 dark:bg-gray-700/50 dark:text-white dark:border-gray-600">
                   <Filter className="h-4 w-4 mr-2" />
                   ตั้งค่าขั้นสูง
                 </Button>
@@ -249,7 +249,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
               </DialogContent>
             </Dialog>
 
-            <Button variant="outline" size="sm" onClick={clearAllFilters} className="bg-white/50">
+            <Button variant="outline" size="sm" onClick={clearAllFilters} className="bg-white/50 dark:bg-gray-700/50 dark:text-white dark:border-gray-600">
               <X className="h-4 w-4 mr-2" />
               ล้าง
             </Button>
@@ -261,7 +261,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
         <div className="flex flex-wrap gap-2 mb-4">
           {/* Active Filters Display */}
           {filters.dateRange.from && (
-            <Badge variant="outline" className="bg-blue-50 text-blue-700">
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700">
               จาก: {format(new Date(filters.dateRange.from), 'dd MMM yyyy', { locale: th })}
               <X 
                 className="h-3 w-3 ml-1 cursor-pointer" 
@@ -270,7 +270,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
             </Badge>
           )}
           {filters.dateRange.to && (
-            <Badge variant="outline" className="bg-blue-50 text-blue-700">
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700">
               ถึง: {format(new Date(filters.dateRange.to), 'dd MMM yyyy', { locale: th })}
               <X 
                 className="h-3 w-3 ml-1 cursor-pointer" 
@@ -300,7 +300,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
             ) : null;
           })}
           {filters.selectedDepartments.map(dept => (
-            <Badge key={dept} variant="outline" className="bg-purple-50 text-purple-700">
+            <Badge key={dept} variant="outline" className="bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700">
               {dept}
               <X 
                 className="h-3 w-3 ml-1 cursor-pointer" 
@@ -316,7 +316,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
             variant="outline" 
             size="sm" 
             onClick={() => onExport('excel')}
-            className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
+            className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700 dark:hover:bg-green-900/40"
           >
             <Download className="h-4 w-4 mr-2" />
             Export Excel
@@ -325,7 +325,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
             variant="outline" 
             size="sm" 
             onClick={() => onExport('pdf')}
-            className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
+            className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700 dark:hover:bg-red-900/40"
           >
             <Download className="h-4 w-4 mr-2" />
             Export PDF

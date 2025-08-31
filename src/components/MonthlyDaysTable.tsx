@@ -51,7 +51,7 @@ export function MonthlyDaysTable({ data, isLoading }: MonthlyDaysTableProps) {
 
   if (isLoading) {
     return (
-      <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+      <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl">
@@ -79,9 +79,9 @@ export function MonthlyDaysTable({ data, isLoading }: MonthlyDaysTableProps) {
 
   if (data.length === 0) {
     return (
-      <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+      <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
+          <CardTitle className="flex items-center gap-3 text-xl text-slate-700 dark:text-slate-300">
             <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl">
               <Calendar className="h-5 w-5 text-emerald-600" />
             </div>
@@ -100,24 +100,24 @@ export function MonthlyDaysTable({ data, isLoading }: MonthlyDaysTableProps) {
   }
 
   return (
-    <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+    <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
-          <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl">
-            <Calendar className="h-5 w-5 text-emerald-600" />
+        <CardTitle className="flex items-center gap-3 text-xl text-slate-700 dark:text-slate-300">
+          <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-800/40 dark:to-green-800/40 rounded-xl">
+            <Calendar className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
           </div>
           ข้อมูลรายวัน (รายเดือน) - {data.length} วัน
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* Header */}
-        <div className="hidden md:grid md:grid-cols-6 gap-4 p-4 bg-slate-50/50 rounded-2xl mb-4 border border-slate-100">
-          <div className="font-semibold text-slate-700">วันที่</div>
-          <div className="font-semibold text-slate-700 text-center">เข้างาน</div>
-          <div className="font-semibold text-slate-700 text-center">ลา</div>
-          <div className="font-semibold text-slate-700 text-center">ไม่ระบุงาน</div>
-          <div className="font-semibold text-slate-700 text-center">รวม</div>
-          <div className="font-semibold text-slate-700">สถานะ</div>
+        <div className="hidden md:grid md:grid-cols-6 gap-4 p-4 bg-slate-50/50 dark:bg-gray-700/50 rounded-2xl mb-4 border border-slate-100 dark:border-gray-600/30">
+          <div className="font-semibold text-slate-700 dark:text-slate-300">วันที่</div>
+          <div className="font-semibold text-slate-700 dark:text-slate-300 text-center">เข้างาน</div>
+          <div className="font-semibold text-slate-700 dark:text-slate-300 text-center">ลา</div>
+          <div className="font-semibold text-slate-700 dark:text-slate-300 text-center">ไม่ระบุงาน</div>
+          <div className="font-semibold text-slate-700 dark:text-slate-300 text-center">รวม</div>
+          <div className="font-semibold text-slate-700 dark:text-slate-300">สถานะ</div>
         </div>
 
         {/* Data Rows */}
@@ -125,45 +125,45 @@ export function MonthlyDaysTable({ data, isLoading }: MonthlyDaysTableProps) {
           {data.map((day, index) => {
             const total = day.present + day.leave + day.notReported;
             return (
-              <div key={index} className="bg-white/40 backdrop-blur-sm rounded-2xl border border-white/30 p-4 hover:bg-white/60 transition-all duration-200">
+              <div key={index} className="bg-white/40 dark:bg-gray-700/40 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-600/30 p-4 hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200">
                 {/* Mobile Layout */}
                 <div className="md:hidden space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="font-medium text-slate-800">
+                    <div className="font-medium text-slate-800 dark:text-slate-200">
                       {formatThaiDate(day.date)}
                     </div>
-                    <Badge variant="outline" className="bg-white/50">
+                    <Badge variant="outline" className="bg-white/50 dark:bg-gray-600/50 dark:text-gray-200 dark:border-gray-500">
                       รวม {total} คน
                     </Badge>
                   </div>
                   
                   <div className="grid grid-cols-3 gap-3 text-sm">
-                    <div className="text-center p-2 bg-green-50/80 rounded-xl">
+                    <div className="text-center p-2 bg-green-50/80 dark:bg-green-900/30 rounded-xl">
                       <div className="flex items-center justify-center gap-1 mb-1">
-                        <UserCheck className="h-3 w-3 text-green-600" />
-                        <span className="text-green-800 font-medium">เข้างาน</span>
+                        <UserCheck className="h-3 w-3 text-green-600 dark:text-green-400" />
+                        <span className="text-green-800 dark:text-green-200 font-medium">เข้างาน</span>
                       </div>
-                      <div className="text-green-700 font-bold text-lg">{day.present}</div>
+                      <div className="text-green-700 dark:text-green-300 font-bold text-lg">{day.present}</div>
                     </div>
                     
-                    <div className="text-center p-2 bg-red-50/80 rounded-xl">
+                    <div className="text-center p-2 bg-red-50/80 dark:bg-red-900/30 rounded-xl">
                       <div className="flex items-center justify-center gap-1 mb-1">
-                        <UserX className="h-3 w-3 text-red-600" />
-                        <span className="text-red-800 font-medium">ลา</span>
+                        <UserX className="h-3 w-3 text-red-600 dark:text-red-400" />
+                        <span className="text-red-800 dark:text-red-200 font-medium">ลา</span>
                       </div>
-                      <div className="text-red-700 font-bold text-lg">{day.leave}</div>
+                      <div className="text-red-700 dark:text-red-300 font-bold text-lg">{day.leave}</div>
                     </div>
                     
-                    <div className="text-center p-2 bg-yellow-50/80 rounded-xl">
+                    <div className="text-center p-2 bg-yellow-50/80 dark:bg-yellow-900/30 rounded-xl">
                       <div className="flex items-center justify-center gap-1 mb-1">
-                        <AlertTriangle className="h-3 w-3 text-yellow-600" />
-                        <span className="text-yellow-800 font-medium">ไม่ระบุงาน</span>
+                        <AlertTriangle className="h-3 w-3 text-yellow-600 dark:text-yellow-400" />
+                        <span className="text-yellow-800 dark:text-yellow-200 font-medium">ไม่ระบุงาน</span>
                       </div>
-                      <div className="text-yellow-700 font-bold text-lg">{day.notReported}</div>
+                      <div className="text-yellow-700 dark:text-yellow-300 font-bold text-lg">{day.notReported}</div>
                     </div>
                   </div>
                   
-                  <div className="text-sm text-slate-600 bg-slate-50/50 rounded-lg p-2">
+                  <div className="text-sm text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-gray-600/50 rounded-lg p-2">
                     {getStatusText(day.present, day.leave, day.notReported)}
                   </div>
                 </div>

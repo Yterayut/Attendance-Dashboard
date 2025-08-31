@@ -535,11 +535,11 @@ export default function AttendanceDashboard() {
 
         {/* DAY TAB */}
         <TabsContent value="day" className="space-y-6">
-          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
             <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
-                <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl">
-                  <Calendar className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-3 text-xl text-slate-700 dark:text-slate-300">
+                <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800/40 dark:to-indigo-800/40 rounded-xl">
+                  <Calendar className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 เลือกวันที่
               </CardTitle>
@@ -550,10 +550,10 @@ export default function AttendanceDashboard() {
                   <Button
                     onClick={openDatePicker}
                     variant="outline"
-                    className="w-full h-14 text-lg border-2 border-slate-200 rounded-2xl hover:border-indigo-400 bg-white/50 backdrop-blur-sm justify-start gap-3 font-medium"
+                    className="w-full h-14 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl hover:border-indigo-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm justify-start gap-3 font-medium"
                   >
-                    <CalendarDays className="h-5 w-5 text-indigo-600" />
-                    <span className="text-slate-700">
+                    <CalendarDays className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                    <span className="text-slate-700 dark:text-slate-300">
                       {new Date(selectedDate).toLocaleDateString('th-TH', {
                         year: 'numeric',
                         month: 'long',
@@ -563,12 +563,12 @@ export default function AttendanceDashboard() {
                     </span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl border-0 shadow-2xl">
+                <DialogContent className="sm:max-w-lg bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl border-0 shadow-2xl">
                   <DialogHeader className="text-center space-y-4 pb-4">
                     <div className="mx-auto p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl w-fit">
                       <CalendarDays className="h-6 w-6 text-indigo-600" />
                     </div>
-                    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
                       เลือกวันที่
                     </DialogTitle>
                   </DialogHeader>
@@ -603,7 +603,7 @@ export default function AttendanceDashboard() {
                     </div>
 
                     {/* Calendar Grid */}
-                    <div className="bg-white/60 rounded-2xl p-4 border border-slate-100">
+                    <div className="bg-white/60 dark:bg-gray-700/60 rounded-2xl p-4 border border-slate-100 dark:border-gray-600">
                       {/* Day Headers */}
                       <div className="grid grid-cols-7 gap-1 mb-2">
                         {['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map((day) => (
@@ -664,9 +664,9 @@ export default function AttendanceDashboard() {
 
         {/* MONTH TAB */}
         <TabsContent value="month" className="space-y-6">
-          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
             <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
+              <CardTitle className="flex items-center gap-3 text-xl text-slate-700 dark:text-slate-300">
                 <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl">
                   <Calendar className="h-5 w-5 text-emerald-600" />
                 </div>
@@ -675,18 +675,18 @@ export default function AttendanceDashboard() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">ปี</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ปี</label>
                 <Input 
                   type="number" 
                   value={selectedMonthYear} 
                   onChange={e=>setSelectedMonthYear(parseInt(e.target.value||`${now.getFullYear()}`))} 
-                  className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 focus:ring-emerald-400 bg-white/50 backdrop-blur-sm" 
+                  className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-emerald-400 focus:ring-emerald-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white" 
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">จากเดือน</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">จากเดือน</label>
                 <Select value={String(selectedFromMonth)} onValueChange={(v)=>{setSelectedFromMonth(parseInt(v)); setSelectedPeriodPreset('');}}>
-                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 bg-white/50 backdrop-blur-sm">
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-emerald-400 dark:focus:border-emerald-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="rounded-2xl border-slate-200">
@@ -695,9 +695,9 @@ export default function AttendanceDashboard() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">ถึงเดือน</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ถึงเดือน</label>
                 <Select value={String(selectedToMonth)} onValueChange={(v)=>{setSelectedToMonth(parseInt(v)); setSelectedPeriodPreset('');}}>
-                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-emerald-400 bg-white/50 backdrop-blur-sm">
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-emerald-400 dark:focus:border-emerald-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="rounded-2xl border-slate-200">
@@ -709,7 +709,7 @@ export default function AttendanceDashboard() {
           </Card>
 
           {/* Period Presets Section */}
-          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
             <CardContent className="pt-6">
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-slate-700 flex items-center gap-2">
@@ -752,9 +752,9 @@ export default function AttendanceDashboard() {
 
         {/* PERSON TAB */}
         <TabsContent value="person" className="space-y-6">
-          <Card className="bg-white/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20">
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
             <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-xl text-slate-700">
+              <CardTitle className="flex items-center gap-3 text-xl text-slate-700 dark:text-slate-300">
                 <div className="p-2 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl">
                   <Users className="h-5 w-5 text-purple-600" />
                 </div>
@@ -763,9 +763,9 @@ export default function AttendanceDashboard() {
             </CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">ชื่อพนักงาน</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ชื่อพนักงาน</label>
                 <Select value={selectedEmployee} onValueChange={(v)=>setSelectedEmployee(v as EmpName)}>
-                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 bg-white/50 backdrop-blur-sm">
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 dark:focus:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="rounded-2xl border-slate-200">
@@ -774,9 +774,9 @@ export default function AttendanceDashboard() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">ช่วงเวลา</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ช่วงเวลา</label>
                 <Select value={personRange} onValueChange={(v)=>setPersonRange(v as any)}>
-                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 bg-white/50 backdrop-blur-sm">
+                  <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 dark:focus:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="rounded-2xl border-slate-200">
@@ -787,7 +787,7 @@ export default function AttendanceDashboard() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">ค่าอ้างอิง</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ค่าอ้างอิง</label>
                 
                 {/* รายวัน - Calendar Picker */}
                 {personRange === 'day' && (
@@ -795,10 +795,10 @@ export default function AttendanceDashboard() {
                     <DialogTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full h-12 text-lg border-2 border-slate-200 rounded-2xl hover:border-purple-400 bg-white/50 backdrop-blur-sm justify-start gap-3 font-medium"
+                        className="w-full h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl hover:border-purple-400 dark:hover:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm justify-start gap-3 font-medium text-gray-900 dark:text-white"
                       >
                         <CalendarDays className="h-4 w-4 text-purple-600" />
-                        <span className="text-slate-700">
+                        <span className="text-slate-700 dark:text-slate-300">
                           {new Date(personOn).toLocaleDateString('th-TH', {
                             year: 'numeric',
                             month: 'long', 
@@ -807,7 +807,7 @@ export default function AttendanceDashboard() {
                         </span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl border-0 shadow-2xl">
+                    <DialogContent className="sm:max-w-lg bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl border-0 shadow-2xl">
                       <DialogHeader className="text-center space-y-4 pb-4">
                         <div className="mx-auto p-3 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl w-fit">
                           <CalendarDays className="h-6 w-6 text-purple-600" />
@@ -847,7 +847,7 @@ export default function AttendanceDashboard() {
                         </div>
 
                         {/* Calendar Grid */}
-                        <div className="bg-white/60 rounded-2xl p-4 border border-slate-100">
+                        <div className="bg-white/60 dark:bg-gray-700/60 rounded-2xl p-4 border border-slate-100 dark:border-gray-600">
                           {/* Day Headers */}
                           <div className="grid grid-cols-7 gap-1 mb-2">
                             {['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map((day) => (
@@ -894,7 +894,7 @@ export default function AttendanceDashboard() {
                       handleReferenceSelect(`${year}-${month}`);
                     }}
                   >
-                    <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 bg-white/50 backdrop-blur-sm">
+                    <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 dark:focus:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
                       <SelectValue placeholder="เลือกเดือน" />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl border-slate-200">
@@ -913,7 +913,7 @@ export default function AttendanceDashboard() {
                     value={personOn}
                     onValueChange={handleReferenceSelect}
                   >
-                    <SelectTrigger className="h-12 text-lg border-2 border-slate-200 rounded-2xl focus:border-purple-400 bg-white/50 backdrop-blur-sm">
+                    <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 dark:focus:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
                       <SelectValue placeholder="เลือกปี พ.ศ." />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl border-slate-200">

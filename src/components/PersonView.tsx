@@ -175,7 +175,7 @@ export function PersonView({
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Card className="bg-white shadow-sm border-0 rounded-2xl">
+        <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
           <CardContent className="p-6">
             <Skeleton className="h-10 w-full mb-4" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -192,11 +192,11 @@ export function PersonView({
   return (
     <div className="space-y-6">
       {/* Employee Selection */}
-      <Card className="bg-white shadow-sm border-0 rounded-2xl">
+      <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
         <CardContent className="p-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <label className="block text-sm text-gray-700">เลือกพนักงาน</label>
+              <label className="block text-sm text-gray-700 dark:text-gray-300">เลือกพนักงาน</label>
               {selectedEmployee && (
                 <Button
                   onClick={exportToPDF}
@@ -210,15 +210,15 @@ export function PersonView({
             </div>
             
             <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-              <SelectTrigger className="rounded-lg border-gray-200">
+              <SelectTrigger className="rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 <SelectValue placeholder="กรุณาเลือกพนักงาน..." />
               </SelectTrigger>
               <SelectContent>
                 {employees.map((employee) => (
                   <SelectItem key={employee} value={employee}>
                     <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-gray-400" />
-                      <span>{employee}</span>
+                      <User className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                      <span className="dark:text-white">{employee}</span>
                     </div>
                   </SelectItem>
                 ))}
@@ -226,12 +226,12 @@ export function PersonView({
             </Select>
             
             {selectedEmployee && (
-              <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <div className="flex items-center gap-2 text-sm text-blue-700">
+              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-700/30">
+                <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
                   <User className="h-4 w-4" />
                   <span>พนักงานที่เลือก: <span className="">{selectedEmployee}</span></span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-blue-600 mt-1">
+                <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 mt-1">
                   <Calendar className="h-4 w-4" />
                   <span>ข้อมูล{filterInfo.period}: {filterInfo.displayText}</span>
                 </div>
@@ -264,10 +264,10 @@ export function PersonView({
           </div>
 
           {/* Statistics */}
-          <Card className="bg-white shadow-sm border-0 rounded-2xl">
+          <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                <BarChart3 className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                 สถิติการเข้างาน: {selectedEmployee}
                 <Badge variant="secondary" className="ml-2 text-xs">
                   {filterInfo.period}: {filterInfo.displayText}
@@ -276,46 +276,46 @@ export function PersonView({
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg border border-green-100">
+                <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-lg border border-green-100 dark:border-green-700/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-green-700">เข้างาน</span>
+                    <div className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full"></div>
+                    <span className="text-sm text-green-700 dark:text-green-300">เข้างาน</span>
                   </div>
-                  <div className="text-2xl text-green-600">{employeeStats.present}</div>
-                  <div className="text-xs text-green-600">
+                  <div className="text-2xl text-green-600 dark:text-green-400">{employeeStats.present}</div>
+                  <div className="text-xs text-green-600 dark:text-green-400">
                     {employeeStats.total > 0 ? Math.round((employeeStats.present / employeeStats.total) * 100) : 0}%
                   </div>
                 </div>
                 
-                <div className="p-4 bg-red-50 rounded-lg border border-red-100">
+                <div className="p-4 bg-red-50 dark:bg-red-900/30 rounded-lg border border-red-100 dark:border-red-700/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="text-sm text-red-700">ลาป่วย/ลากิจ</span>
+                    <div className="w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full"></div>
+                    <span className="text-sm text-red-700 dark:text-red-300">ลาป่วย/ลากิจ</span>
                   </div>
-                  <div className="text-2xl text-red-600">{employeeStats.leave}</div>
-                  <div className="text-xs text-red-600">
+                  <div className="text-2xl text-red-600 dark:text-red-400">{employeeStats.leave}</div>
+                  <div className="text-xs text-red-600 dark:text-red-400">
                     {employeeStats.total > 0 ? Math.round((employeeStats.leave / employeeStats.total) * 100) : 0}%
                   </div>
                 </div>
                 
-                <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-100">
+                <div className="p-4 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg border border-yellow-100 dark:border-yellow-700/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-sm text-yellow-700">ไม่รายงาน</span>
+                    <div className="w-2 h-2 bg-yellow-500 dark:bg-yellow-400 rounded-full"></div>
+                    <span className="text-sm text-yellow-700 dark:text-yellow-300">ไม่รายงาน</span>
                   </div>
-                  <div className="text-2xl text-yellow-600">{employeeStats.notReported}</div>
-                  <div className="text-xs text-yellow-600">
+                  <div className="text-2xl text-yellow-600 dark:text-yellow-400">{employeeStats.notReported}</div>
+                  <div className="text-xs text-yellow-600 dark:text-yellow-400">
                     {employeeStats.total > 0 ? Math.round((employeeStats.notReported / employeeStats.total) * 100) : 0}%
                   </div>
                 </div>
                 
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-700/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span className="text-sm text-blue-700">รวมทั้งหมด</span>
+                    <div className="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
+                    <span className="text-sm text-blue-700 dark:text-blue-300">รวมทั้งหมด</span>
                   </div>
-                  <div className="text-2xl text-blue-600">{employeeStats.total}</div>
-                  <div className="text-xs text-blue-600">วัน</div>
+                  <div className="text-2xl text-blue-600 dark:text-blue-400">{employeeStats.total}</div>
+                  <div className="text-xs text-blue-600 dark:text-blue-400">วัน</div>
                 </div>
               </div>
             </CardContent>
@@ -323,7 +323,7 @@ export function PersonView({
 
           {/* Monthly Chart */}
           {chartData.length > 0 && (
-            <Card className="bg-white shadow-sm border-0 rounded-2xl">
+            <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
@@ -366,7 +366,7 @@ export function PersonView({
           )}
 
           {/* Activity Log */}
-          <Card className="bg-white shadow-sm border-0 rounded-2xl">
+          <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
@@ -419,7 +419,7 @@ export function PersonView({
         </div>
       ) : (
         /* Empty state when no employee selected */
-        <Card className="bg-white shadow-sm border-0 rounded-2xl">
+        <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
           <CardContent className="p-12">
             <div className="text-center">
               <Search className="h-12 w-12 text-gray-300 mx-auto mb-4" />

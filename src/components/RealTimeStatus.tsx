@@ -108,7 +108,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
   return (
     <>
       {/* Real-time Status Bar */}
-      <Card className="bg-white/80 backdrop-blur-md shadow-lg border-0 rounded-2xl mb-4">
+      <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-lg border-0 rounded-2xl mb-4">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -126,7 +126,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
               </div>
 
               {/* Last Updated */}
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                 <Clock className="h-4 w-4" />
                 <span>อัพเดทล่าสุด: {formatLastUpdated(realTimeData.lastUpdated)}</span>
               </div>
@@ -142,7 +142,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
                   </div>
                   <div className="flex items-center gap-1">
                     <TrendingUp className="h-4 w-4 text-green-600" />
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       {currentSummary.total > 0 ? Math.round((currentSummary.present / currentSummary.total) * 100) : 0}%
                     </span>
                   </div>
@@ -156,7 +156,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
                 variant="outline"
                 size="sm"
                 onClick={toggleAutoRefresh}
-                className={autoRefreshEnabled ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white/50'}
+                className={autoRefreshEnabled ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-600/50' : 'bg-white/50 dark:bg-gray-700/50 dark:text-white dark:border-gray-600'}
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${autoRefreshEnabled ? 'animate-spin' : ''}`} />
                 {autoRefreshEnabled ? 'กำลังอัพเดท' : 'เริ่มอัพเดท'}
@@ -168,7 +168,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
                 size="sm"
                 onClick={onRefreshData}
                 disabled={autoRefreshEnabled}
-                className="bg-white/50"
+                className="bg-white/50 dark:bg-gray-700/50 dark:text-white dark:border-gray-600"
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -176,7 +176,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
               {/* Notifications */}
               <Dialog open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="relative bg-white/50">
+                  <Button variant="outline" size="sm" className="relative bg-white/50 dark:bg-gray-700/50 dark:text-white dark:border-gray-600">
                     {unreadCount > 0 ? (
                       <BellDot className="h-4 w-4" />
                     ) : (

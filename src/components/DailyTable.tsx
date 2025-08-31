@@ -57,20 +57,20 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
       {employees.length > 0 ? (
         <div className="space-y-2">
           {employees.filter(emp => emp !== '—').map((employee, index) => (
-            <div key={index} className={`px-3 py-2 rounded-lg bg-white/50 text-sm font-medium`}>
+            <div key={index} className={`px-3 py-2 rounded-lg bg-white/50 dark:bg-gray-700/50 text-sm font-medium text-gray-800 dark:text-gray-200`}>
               {employee}
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-xs opacity-70">ไม่มีรายชื่อ</div>
+        <div className="text-xs opacity-70 text-gray-600 dark:text-gray-300">ไม่มีรายชื่อ</div>
       )}
     </div>
   );
 
   if (isLoading) {
     return (
-      <Card className="bg-white shadow-sm border-0 rounded-2xl">
+      <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
         <CardHeader>
           <div className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
@@ -97,7 +97,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
 
   if (data.length === 0) {
     return (
-      <Card className="bg-white shadow-sm border-0 rounded-2xl">
+      <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
@@ -106,9 +106,9 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
         </CardHeader>
         <CardContent>
           <div className="text-center py-12">
-            <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-gray-500 mb-2">ไม่มีข้อมูลการเข้างาน</h3>
-            <p className="text-sm text-gray-400">ยังไม่มีข้อมูลในช่วงเวลาที่เลือก</p>
+            <Users className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-gray-500 dark:text-gray-400 mb-2">ไม่มีข้อมูลการเข้างาน</h3>
+            <p className="text-sm text-gray-400 dark:text-gray-500">ยังไม่มีข้อมูลในช่วงเวลาที่เลือก</p>
           </div>
         </CardContent>
       </Card>
@@ -116,10 +116,10 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
   }
 
   return (
-    <Card className="bg-white shadow-sm border-0 rounded-2xl">
+    <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calendar className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+          <Calendar className="h-5 w-5 text-gray-600 dark:text-gray-300" />
           ข้อมูลรายวัน ({period === 'day' ? 'รายวัน' : period === 'month' ? 'รายเดือน' : 'รายปี'})
         </CardTitle>
       </CardHeader>
@@ -129,24 +129,24 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             title="เข้างาน"
             employees={employeesByStatus.present}
             icon={<UserCheck className="h-4 w-4" />}
-            bgColor="bg-green-50 border-green-200"
-            textColor="text-green-800"
+            bgColor="bg-green-50 border-green-200 dark:bg-green-900/30 dark:border-green-600/50"
+            textColor="text-green-800 dark:text-green-200"
           />
           
           <StatusSection
             title="ลาป่วย/ลากิจ"
             employees={employeesByStatus.leave}
             icon={<UserX className="h-4 w-4" />}
-            bgColor="bg-red-50 border-red-200"
-            textColor="text-red-800"
+            bgColor="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-600/50"
+            textColor="text-red-800 dark:text-red-200"
           />
           
           <StatusSection
             title="ไม่รายงาน"
             employees={employeesByStatus.notReported}
             icon={<AlertTriangle className="h-4 w-4" />}
-            bgColor="bg-yellow-50 border-yellow-200"
-            textColor="text-yellow-800"
+            bgColor="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/30 dark:border-yellow-600/50"
+            textColor="text-yellow-800 dark:text-yellow-200"
           />
         </div>
       </CardContent>
