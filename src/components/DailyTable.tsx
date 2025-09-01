@@ -99,8 +99,8 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
     return (
       <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+            <Calendar className="h-5 w-5 text-gray-600 dark:text-gray-300" />
             ข้อมูลรายวัน ({period === 'day' ? 'รายวัน' : period === 'month' ? 'รายเดือน' : 'รายปี'})
           </CardTitle>
         </CardHeader>
