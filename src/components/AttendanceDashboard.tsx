@@ -146,10 +146,19 @@ export default function AttendanceDashboard() {
           fetch(`${API}?route=person&name=${encodeURIComponent(emp)}&range=day&on=${selectedDate}`)
             .then(r=>r.json())
             .then(j=>{
-              const items = j?.data?.items || [];
+              const items = Array.isArray(j?.data?.items) ? j.data.items : [];
+              const normalize = (s:string|undefined) => {
+                const v = (s||'').toString().toLowerCase();
+                if (!v) return 'not_reported';
+                if (/(present|เข้างาน|เข้า|เช็คอิน|ทำงาน)/.test(v)) return 'present';
+                if (/(leave|ลา|ลากิจ|ลาป่วย|หยุด)/.test(v)) return 'leave';
+                if (/(ไม่รายงาน|not_reported|no report)/.test(v)) return 'not_reported';
+                return 'not_reported';
+              };
               return items.map((item:any) => ({
                 ...item,
                 name: emp,
+                status: normalize(item?.status ?? item?.state ?? item?.statusTh),
               }));
             })
             .catch(()=>[])
@@ -206,10 +215,19 @@ export default function AttendanceDashboard() {
         fetch(`${API}?route=person&name=${encodeURIComponent(emp)}&range=day&on=${selectedDate}`)
           .then(r=>r.json())
           .then(j=>{
-            const items = j?.data?.items || [];
+            const items = Array.isArray(j?.data?.items) ? j.data.items : [];
+            const normalize = (s:string|undefined) => {
+              const v = (s||'').toString().toLowerCase();
+              if (!v) return 'not_reported';
+              if (/(present|เข้างาน|เข้า|เช็คอิน|ทำงาน)/.test(v)) return 'present';
+              if (/(leave|ลา|ลากิจ|ลาป่วย|หยุด)/.test(v)) return 'leave';
+              if (/(ไม่รายงาน|not_reported|no report)/.test(v)) return 'not_reported';
+              return 'not_reported';
+            };
             return items.map((item:any) => ({
               ...item,
-              name: emp, // Make sure name is included
+              name: emp,
+              status: normalize(item?.status ?? item?.state ?? item?.statusTh),
             }));
           })
           .catch(()=>[])
