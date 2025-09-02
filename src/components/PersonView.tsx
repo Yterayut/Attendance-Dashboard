@@ -6,6 +6,7 @@ import { Badge } from './ui/badge';
 import { Skeleton } from './ui/skeleton';
 import { User, Clock, Calendar, BarChart3, Search, Download, FileText } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { exportToCSV } from '../utils/exportUtils';
 
 interface PersonViewProps {
   data: Array<{
@@ -198,14 +199,35 @@ export function PersonView({
             <div className="flex items-center justify-between">
               <label className="block text-sm text-gray-700 dark:text-gray-300">เลือกพนักงาน</label>
               {selectedEmployee && (
-                <Button
-                  onClick={exportToPDF}
-                  size="sm"
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
-                >
-                  <Download className="h-4 w-4" />
-                  Export PDF
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={async () => exportToPDF()}
+                    size="sm"
+                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Download className="h-4 w-4" />
+                    Export PDF
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      const rows = (data || []).filter(r => r.employee === selectedEmployee).map(r => ({
+                        date: r.date,
+                        employee: r.employee,
+                        status: r.status,
+                        department: 'IT',
+                        checkIn: r.checkIn || undefined,
+                        checkOut: r.checkOut || undefined,
+                        reason: '-'
+                      }));
+                      exportToCSV(rows, `person_${selectedEmployee}`);
+                    }}
+                    size="sm"
+                    className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700"
+                  >
+                    <Download className="h-4 w-4" />
+                    Export CSV
+                  </Button>
+                </div>
               )}
             </div>
             

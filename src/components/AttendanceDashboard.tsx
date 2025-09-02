@@ -14,7 +14,7 @@ import { PersonView } from './PersonView';
 import { AdvancedFilter } from './AdvancedFilter';
 import { RealTimeStatus } from './RealTimeStatus';
 import { ThemeToggle } from './ThemeToggle';
-import { exportToExcel, exportToPDF, exportToCSV } from '../utils/exportUtils';
+import { exportToExcel, exportToPDF } from '../utils/exportUtils';
 
 const API = import.meta.env.VITE_API_URL as string;
 
@@ -116,7 +116,7 @@ export default function AttendanceDashboard() {
   };
 
   // Handle export functions
-  const handleExport = async (type: 'excel' | 'pdf' | 'csv') => {
+  const handleExport = (type: 'excel' | 'pdf') => {
     const dataToExport = filteredDailyEmployees.map(emp => ({
       date: emp.date,
       employee: emp.name,
@@ -128,10 +128,8 @@ export default function AttendanceDashboard() {
 
     if (type === 'excel') {
       exportToExcel(dataToExport, `attendance_${tab}`);
-    } else if (type === 'csv') {
-      exportToCSV(dataToExport, `attendance_${tab}`);
     } else {
-      await exportToPDF('dashboard-content', `attendance_${tab}`);
+      exportToPDF('dashboard-content', `attendance_${tab}`);
     }
   };
 
@@ -679,10 +677,23 @@ export default function AttendanceDashboard() {
 
           <div id="dashboard-content" data-export="true">
             <DailyTable 
-              data={filteredDailyEmployees}
+              data={filteredDailyEmployees.map((e:any)=>({
+                date: e.date,
+                employee: e.name ?? e.employee ?? '',
+                status: e.status,
+                checkIn: e.checkIn ?? null,
+                checkOut: e.checkOut ?? null,
+              }))}
               period="day"
               isLoading={isLoading}
             />
+          </div>
+          <div className="flex items-center justify-end gap-2">
+            <Button variant="outline" size="sm" onClick={async ()=>{
+              const rows = monthDays.map(d=>({ date: d.date, employee: '', status: `present:${d.present}|leave:${d.leave}|not_reported:${d.notReported}`, department: '—' }));
+              exportToCSV(rows as any, `month_${selectedMonthYear}_${String(selectedFromMonth+1).padStart(2,'0')}-${String(selectedToMonth+1).padStart(2,'0')}`);
+            }}>Export CSV</Button>
+            <Button variant="outline" size="sm" onClick={async ()=>{ await exportToPDF('dashboard-content', `month_${selectedMonthYear}_${String(selectedFromMonth+1).padStart(2,'0')}-${String(selectedToMonth+1).padStart(2,'0')}`)}}>Export PDF</Button>
           </div>
         </TabsContent>
 
