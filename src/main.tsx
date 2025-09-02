@@ -8,12 +8,16 @@ import './index.css'
 import './figma/styles/globals.css'
 
 import AttendanceDashboard from './components/AttendanceDashboard'
+import ThemeLab from './ThemeLab'
 import { ThemeProvider } from './contexts/ThemeContext'
+
+const url = new URL(window.location.href)
+const isThemeLab = url.hash.includes('theme-lab') || url.searchParams.get('lab') === '1'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <AttendanceDashboard />
+      {isThemeLab ? <ThemeLab /> : <AttendanceDashboard />}
     </ThemeProvider>
   </React.StrictMode>
 )
