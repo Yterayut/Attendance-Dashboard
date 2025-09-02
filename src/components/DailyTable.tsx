@@ -49,11 +49,11 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
   }) => (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
       <div className="mb-3">
-        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-white/70 text-slate-800 backdrop-blur-sm dark:bg-black/30 dark:text-white">
-          <div className="shrink-0">
+        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-white/80 text-slate-800 backdrop-blur-sm dark:bg-black/50 dark:text-white border border-black/10 dark:border-white/10 shadow-sm">
+          <div className="shrink-0 text-current">
             {icon}
           </div>
-          <h3 className="font-semibold text-sm drop-shadow-sm">
+          <h3 className="font-semibold text-sm leading-none tracking-normal">
             {title} ({employees.filter(emp => emp !== '—').length} คน)
           </h3>
         </div>
@@ -61,13 +61,13 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
       {employees.length > 0 ? (
         <div className="space-y-2">
           {employees.filter(emp => emp !== '—').map((employee, index) => (
-            <div key={index} className={`px-3 py-2 rounded-lg bg-white/50 dark:bg-gray-700/70 text-sm font-medium text-gray-800 dark:text-gray-100`}>
+            <div key={index} className={`px-3 py-2 rounded-lg bg-white/60 dark:bg-gray-700/80 text-sm font-semibold text-gray-800 dark:text-white`}> 
               {employee}
             </div>
           ))}
         </div>
       ) : (
-        <div className={`text-sm opacity-90 ${textColor}`}>ไม่มีรายชื่อ</div>
+        <div className={`text-sm opacity-100 text-gray-600 dark:text-gray-300`}>ไม่มีรายชื่อ</div>
       )}
     </div>
   );
