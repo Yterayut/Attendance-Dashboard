@@ -677,7 +677,13 @@ export default function AttendanceDashboard() {
 
           <div id="dashboard-content" data-export="true">
             <DailyTable 
-              data={filteredDailyEmployees}
+              data={filteredDailyEmployees.map((e:any)=>({
+                date: e.date,
+                employee: e.name ?? e.employee ?? '',
+                status: e.status,
+                checkIn: e.checkIn ?? null,
+                checkOut: e.checkOut ?? null,
+              }))}
               period="day"
               isLoading={isLoading}
             />
