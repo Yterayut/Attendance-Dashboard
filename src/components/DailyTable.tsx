@@ -50,7 +50,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
     <div className={`p-4 rounded-xl border ${bgColor} ${textColor}`}>
       <div className="flex items-center gap-2 mb-3">
         {icon}
-        <h3 className="font-semibold text-sm">
+        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
           {title} ({employees.filter(emp => emp !== '—').length} คน)
         </h3>
       </div>
