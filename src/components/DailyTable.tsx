@@ -49,7 +49,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
   }) => (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
       <div className="mb-3">
-        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-[var(--chip-bg)] text-[var(--on-surface)] border border-[var(--chip-border)] backdrop-blur-sm shadow-sm">
+        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-[var(--chip-bg)] text-[color:var(--on-surface)] border border-[var(--chip-border)] backdrop-blur-sm shadow-sm">
           <div className="shrink-0 text-current">
             {icon}
           </div>
@@ -61,7 +61,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
       {employees.length > 0 ? (
         <div className="space-y-2">
           {employees.filter(emp => emp !== '—').map((employee, index) => (
-            <div key={index} className={`px-3 py-2 rounded-lg bg-[var(--panel-bg)] text-sm font-semibold text-[var(--on-surface)]`}> 
+            <div key={index} className={`px-3 py-2 rounded-lg bg-[var(--panel-bg)] text-sm font-semibold text-[color:var(--on-surface)]`}> 
               {employee}
             </div>
           ))}
