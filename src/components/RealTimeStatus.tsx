@@ -134,9 +134,9 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
               {/* Real-time Counter */}
               {currentSummary && (
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--chip-bg)] text-[var(--on-surface)] border border-[var(--chip-border)]">
                     <Users className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-semibold text-blue-700">
+                    <span className="text-sm font-semibold">
                       {currentSummary.present} คน
                     </span>
                   </div>
@@ -157,6 +157,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
                 size="sm"
                 onClick={toggleAutoRefresh}
                 className={autoRefreshEnabled ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-600/50' : 'bg-[var(--chip-bg)] text-[var(--on-surface)] dark:text-white dark:border-gray-600'}
+                aria-label={autoRefreshEnabled ? 'หยุดอัพเดทอัตโนมัติ' : 'เริ่มอัพเดทอัตโนมัติ'}
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${autoRefreshEnabled ? 'animate-spin' : ''}`} />
                 {autoRefreshEnabled ? 'กำลังอัพเดท' : 'เริ่มอัพเดท'}
@@ -169,14 +170,16 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
                 onClick={onRefreshData}
                 disabled={autoRefreshEnabled}
                 className="bg-[var(--chip-bg)] text-[var(--on-surface)] dark:text-white dark:border-gray-600"
+                aria-label="รีเฟรชข้อมูล"
               >
                 <RefreshCw className="h-4 w-4" />
+                <span className="sr-only">รีเฟรชข้อมูล</span>
               </Button>
 
               {/* Notifications */}
               <Dialog open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="relative bg-[var(--chip-bg)] text-[var(--on-surface)] dark:text-white dark:border-gray-600">
+                  <Button variant="outline" size="sm" className="relative bg-[var(--chip-bg)] text-[var(--on-surface)] dark:text-white dark:border-gray-600" aria-label="การแจ้งเตือน">
                     {unreadCount > 0 ? (
                       <BellDot className="h-4 w-4" />
                     ) : (
@@ -187,6 +190,7 @@ export function RealTimeStatus({ onRefreshData, currentSummary }: RealTimeStatus
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </Badge>
                     )}
+                    <span className="sr-only">การแจ้งเตือน</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">

@@ -19,7 +19,7 @@ test.afterAll(async () => {
   }
 })
 
-async function runAxe(pageUrl: string) {
+async function runAxe(page: import('@playwright/test').Page, pageUrl: string) {
   await test.step(`visit ${pageUrl}`, async () => {
     await page.goto(pageUrl)
   })
@@ -36,7 +36,7 @@ async function runAxe(pageUrl: string) {
 }
 
 test('ThemeLab light has no serious a11y issues', async ({ page }) => {
-  await runAxe('http://localhost:4173/?lab=1')
+  await runAxe(page, 'http://localhost:4173/?lab=1')
 })
 
 test('ThemeLab dark has no serious a11y issues', async ({ page }) => {
@@ -50,4 +50,3 @@ test('ThemeLab dark has no serious a11y issues', async ({ page }) => {
   const serious = results.violations.filter((v) => ['serious', 'critical'].includes(v.impact || ''))
   expect(serious, JSON.stringify(results.violations, null, 2)).toHaveLength(0)
 })
-

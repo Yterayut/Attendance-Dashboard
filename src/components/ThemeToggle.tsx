@@ -66,9 +66,11 @@ export function ThemeToggle() {
         size="sm"
         onClick={toggleTheme}
         className="bg-white/50 dark:bg-gray-800/50 hover:bg-white/70 dark:hover:bg-gray-700/70"
+        aria-label="สลับโหมดธีม"
         title={`ปัจจุบัน: ${theme === 'auto' ? 'อัตโนมัติ' : theme === 'dark' ? 'มืด' : 'สว่าง'}`}
       >
         <CurrentThemeIcon className="h-4 w-4" />
+        <span className="sr-only">สลับโหมดธีม</span>
       </Button>
 
       {/* Advanced Theme Settings */}
@@ -78,9 +80,11 @@ export function ThemeToggle() {
             variant="outline"
             size="sm"
             className="bg-white/50 dark:bg-gray-800/50 hover:bg-white/70 dark:hover:bg-gray-700/70"
+            aria-label="ตั้งค่าธีม"
           >
             <CustomThemeIcon className="h-4 w-4 mr-2" />
             <Palette className="h-3 w-3" />
+            <span className="sr-only">ตั้งค่าธีม</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-md">

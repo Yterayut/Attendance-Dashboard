@@ -581,8 +581,10 @@ export default function AttendanceDashboard() {
                         size="icon"
                         onClick={goToPrevMonth}
                         className="h-10 w-10 rounded-xl border-2 border-slate-200 hover:border-indigo-400"
+                        aria-label="เดือนก่อนหน้า"
                       >
                         <ChevronLeft className="h-4 w-4" />
+                        <span className="sr-only">เดือนก่อนหน้า</span>
                       </Button>
                       
                       <div className="text-center">
@@ -597,8 +599,10 @@ export default function AttendanceDashboard() {
                         size="icon"
                         onClick={goToNextMonth}
                         className="h-10 w-10 rounded-xl border-2 border-slate-200 hover:border-indigo-400"
+                        aria-label="เดือนถัดไป"
                       >
                         <ChevronRight className="h-4 w-4" />
+                        <span className="sr-only">เดือนถัดไป</span>
                       </Button>
                     </div>
 
@@ -825,8 +829,10 @@ export default function AttendanceDashboard() {
                             size="icon"
                             onClick={goToPrevMonth}
                             className="h-10 w-10 rounded-xl border-2 border-slate-200 hover:border-purple-400"
+                            aria-label="เดือนก่อนหน้า"
                           >
                             <ChevronLeft className="h-4 w-4" />
+                            <span className="sr-only">เดือนก่อนหน้า</span>
                           </Button>
                           
                           <div className="text-center">
@@ -841,8 +847,10 @@ export default function AttendanceDashboard() {
                             size="icon"
                             onClick={goToNextMonth}
                             className="h-10 w-10 rounded-xl border-2 border-slate-200 hover:border-purple-400"
+                            aria-label="เดือนถัดไป"
                           >
                             <ChevronRight className="h-4 w-4" />
+                            <span className="sr-only">เดือนถัดไป</span>
                           </Button>
                         </div>
 

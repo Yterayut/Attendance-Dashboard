@@ -170,28 +170,28 @@ export function MonthlyDaysTable({ data, isLoading }: MonthlyDaysTableProps) {
 
                 {/* Desktop Layout */}
                 <div className="hidden md:grid md:grid-cols-6 gap-4 items-center">
-                  <div className="font-medium text-slate-800">
+                  <div className="font-medium text-slate-800 dark:text-slate-200">
                     {formatThaiDate(day.date)}
                   </div>
                   
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1">
                       <UserCheck className="h-4 w-4 text-green-600" />
-                      <span className="font-semibold text-green-700">{day.present}</span>
+                      <span className="font-semibold text-green-700 dark:text-green-300">{day.present}</span>
                     </div>
                   </div>
                   
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1">
                       <UserX className="h-4 w-4 text-red-600" />
-                      <span className="font-semibold text-red-700">{day.leave}</span>
+                      <span className="font-semibold text-red-700 dark:text-red-300">{day.leave}</span>
                     </div>
                   </div>
                   
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1">
                       <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                      <span className="font-semibold text-yellow-700">{day.notReported}</span>
+                      <span className="font-semibold text-yellow-700 dark:text-yellow-300">{day.notReported}</span>
                     </div>
                   </div>
                   
@@ -201,7 +201,7 @@ export function MonthlyDaysTable({ data, isLoading }: MonthlyDaysTableProps) {
                     </Badge>
                   </div>
                   
-                  <div className="text-sm text-slate-600">
+                  <div className="text-sm text-slate-600 dark:text-slate-300">
                     {getStatusText(day.present, day.leave, day.notReported)}
                   </div>
                 </div>
