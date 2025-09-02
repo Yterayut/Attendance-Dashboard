@@ -47,10 +47,10 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
     bgColor: string;
     textColor: string;
   }) => (
-    <div className={`p-4 rounded-xl border ${bgColor} ${textColor}`}>
+    <div className={`p-4 rounded-xl border ${bgColor}`}>
       <div className="flex items-center gap-2 mb-3">
-        {icon}
-        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+        <div className={textColor}>{icon}</div>
+        <h3 className={`font-semibold text-sm ${textColor}`}>
           {title} ({employees.filter(emp => emp !== '—').length} คน)
         </h3>
       </div>
@@ -63,7 +63,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
           ))}
         </div>
       ) : (
-        <div className="text-xs opacity-70 text-gray-600 dark:text-gray-300">ไม่มีรายชื่อ</div>
+        <div className={`text-xs opacity-70 ${textColor}`}>ไม่มีรายชื่อ</div>
       )}
     </div>
   );
