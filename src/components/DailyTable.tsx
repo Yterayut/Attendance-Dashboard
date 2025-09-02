@@ -46,7 +46,14 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
     icon: React.ReactNode;
     bgColor: string;
     textColor: string;
-  }) => (
+  }) => {
+    const prepared = employees.map((e) => {
+      if (typeof e === 'string' && e.trim()) return e
+      return '—'
+    })
+    const isEffectivelyEmpty = prepared.length === 0 || prepared.every(e => e === '—')
+
+    return (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
       <div className="mb-3">
         <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-[var(--chip-bg)] text-white dark:text-white border border-[var(--chip-border)] backdrop-blur-sm shadow-sm"
@@ -59,9 +66,9 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
           </h3>
         </div>
       </div>
-      {employees.length > 0 ? (
+      {!isEffectivelyEmpty ? (
         <div className="space-y-2">
-          {(period === 'month' ? employees.filter(emp => emp !== '—') : employees).map((employee, index) => (
+          {(period === 'month' ? prepared.filter(emp => emp !== '—') : prepared).map((employee, index) => (
             <div key={index} className={`px-3 py-2 rounded-lg bg-[var(--panel-bg)] text-sm font-semibold text-white dark:text-white`} 
                  style={{ color: 'var(--on-surface)' }}>
               {employee}
@@ -72,7 +79,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
         <div className={`text-sm opacity-100 text-[color:var(--on-surface-muted)]`}>ไม่มีรายชื่อ</div>
       )}
     </div>
-  );
+  )};
 
   if (isLoading) {
     return (
