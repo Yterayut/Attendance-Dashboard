@@ -130,7 +130,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             employees={employeesByStatus.present}
             icon={<UserCheck className="h-4 w-4" />}
             bgColor="bg-green-50 border-green-200 dark:bg-green-900/30 dark:border-green-600/50"
-            textColor="text-green-800 dark:text-green-200"
+            textColor="text-green-800 dark:text-white"
           />
           
           <StatusSection
@@ -138,7 +138,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             employees={employeesByStatus.leave}
             icon={<UserX className="h-4 w-4" />}
             bgColor="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-600/50"
-            textColor="text-red-800 dark:text-red-200"
+            textColor="text-red-800 dark:text-white"
           />
           
           <StatusSection
@@ -146,7 +146,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             employees={employeesByStatus.notReported}
             icon={<AlertTriangle className="h-4 w-4" />}
             bgColor="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/30 dark:border-yellow-600/50"
-            textColor="text-yellow-800 dark:text-yellow-200"
+            textColor="text-yellow-800 dark:text-white"
           />
         </div>
       </CardContent>
