@@ -31,7 +31,7 @@ interface FilterState {
 
 interface AdvancedFilterProps {
   onFilterChange: (filters: FilterState) => void;
-  onExport: (type: 'excel' | 'pdf') => void;
+  onExport: (type: 'excel' | 'pdf' | 'csv') => void;
   isVisible: boolean;
 }
 
@@ -322,6 +322,15 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
           >
             <Download className="h-4 w-4 mr-2" />
             Export Excel
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => onExport('csv')}
+            className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 dark:hover:bg-blue-900/40"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
           </Button>
           <Button 
             variant="outline" 

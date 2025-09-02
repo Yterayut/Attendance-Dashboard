@@ -1,5 +1,15 @@
 # Attendance Dashboard — Engineering Memory (Dark Mode + Day View Fixes)
 
+## Changelog
+- 2025-09-02
+  - Day view: map `name -> employee` before passing to `DailyTable` (names now render).
+  - Normalize API person status (Thai/English) to `present|leave|not_reported`.
+  - Dark Mode: chip headers + list items use theme tokens and safe inline `color: var(--on-surface)`.
+  - Add theme tokens in `globals.css` (surfaces, text, chip, status).
+  - Refactor AdvancedFilter/RealTimeStatus/SummaryCards/DailyTable to tokens; reduce translucent backgrounds in dark.
+  - A11y: add `aria-label`/`sr-only` to icon-only buttons (refresh, notifications, calendar nav, theme toggle).
+  - Theme Lab page (`/?lab=1`) and Playwright + axe-core tests; add `npm run test:e2e`.
+
 This file records recent changes so future work can build on them confidently.
 
 ## Outcomes
@@ -79,4 +89,3 @@ Usage patterns:
 
 ---
 This memory file should be updated with each substantive change to keep context fresh for future iterations.
-

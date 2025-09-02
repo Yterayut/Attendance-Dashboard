@@ -14,7 +14,7 @@ import { PersonView } from './PersonView';
 import { AdvancedFilter } from './AdvancedFilter';
 import { RealTimeStatus } from './RealTimeStatus';
 import { ThemeToggle } from './ThemeToggle';
-import { exportToExcel, exportToPDF } from '../utils/exportUtils';
+import { exportToExcel, exportToPDF, exportToCSV } from '../utils/exportUtils';
 
 const API = import.meta.env.VITE_API_URL as string;
 
@@ -116,7 +116,7 @@ export default function AttendanceDashboard() {
   };
 
   // Handle export functions
-  const handleExport = (type: 'excel' | 'pdf') => {
+  const handleExport = async (type: 'excel' | 'pdf' | 'csv') => {
     const dataToExport = filteredDailyEmployees.map(emp => ({
       date: emp.date,
       employee: emp.name,
@@ -128,8 +128,10 @@ export default function AttendanceDashboard() {
 
     if (type === 'excel') {
       exportToExcel(dataToExport, `attendance_${tab}`);
+    } else if (type === 'csv') {
+      exportToCSV(dataToExport, `attendance_${tab}`);
     } else {
-      exportToPDF('dashboard-content', `attendance_${tab}`);
+      await exportToPDF('dashboard-content', `attendance_${tab}`);
     }
   };
 
@@ -677,13 +679,7 @@ export default function AttendanceDashboard() {
 
           <div id="dashboard-content" data-export="true">
             <DailyTable 
-              data={filteredDailyEmployees.map((e:any)=>({
-                date: e.date,
-                employee: e.name ?? e.employee ?? '',
-                status: e.status,
-                checkIn: e.checkIn ?? null,
-                checkOut: e.checkOut ?? null,
-              }))}
+              data={filteredDailyEmployees}
               period="day"
               isLoading={isLoading}
             />

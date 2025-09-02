@@ -1,7 +1,6 @@
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// html2canvas and jsPDF are loaded lazily inside the PDF function
 
 interface ExportData {
   date: string;
@@ -58,6 +57,10 @@ export const exportToExcel = (data: ExportData[], filename: string = 'attendance
 
 export const exportToPDF = async (elementId: string, filename: string = 'attendance_report') => {
   try {
+    const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      import('html2canvas'),
+      import('jspdf')
+    ]);
     // Wait a bit for the DOM to be ready
     await new Promise(resolve => setTimeout(resolve, 500));
     
@@ -145,6 +148,29 @@ export const exportToPDF = async (elementId: string, filename: string = 'attenda
     
     alert(errorMessage);
   }
+};
+
+export const exportToCSV = (data: ExportData[], filename: string = 'attendance_report') => {
+  const headers = ['วันที่','ชื่อพนักงาน','สถานะ','แผนก','เวลาเข้า','เวลาออก','หมายเหตุ'];
+  const rows = data.map(item => [
+    item.date,
+    item.employee,
+    item.status === 'present' ? 'เข้างาน' : item.status === 'leave' ? 'ลา' : 'ไม่ระบุงาน',
+    item.department || 'ไม่ระบุ',
+    item.checkIn || '-',
+    item.checkOut || '-',
+    (item.reason || '-').toString().replace(/\r?\n|\r/g,' '),
+  ]);
+  const csv = [headers, ...rows]
+    .map(r => r.map(v => {
+      const s = String(v ?? '');
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+    }).join(','))
+    .join('\n');
+  const bom = '\uFEFF';
+  const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+  const ts = new Date().toISOString().slice(0,19).replace(/:/g,'-');
+  saveAs(blob, `${filename}_${ts}.csv`);
 };
 
 export const generateSummaryReport = (data: ExportData[]) => {
