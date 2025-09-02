@@ -49,8 +49,8 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
   }) => (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
       <div className="flex items-center gap-2 mb-3">
-        <div className={textColor}>{icon}</div>
-        <h3 className={`font-semibold text-sm ${textColor}`}>
+        <div className={`${textColor} dark:text-white`}>{icon}</div>
+        <h3 className={`font-semibold text-sm ${textColor} dark:text-white drop-shadow-sm`}>
           {title} ({employees.filter(emp => emp !== '—').length} คน)
         </h3>
       </div>
@@ -129,24 +129,24 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             title="เข้างาน"
             employees={employeesByStatus.present}
             icon={<UserCheck className="h-4 w-4" />}
-            bgColor="bg-green-50 border-green-200 dark:bg-green-800 dark:border-green-400/80"
-            textColor="text-green-800 dark:text-white"
+            bgColor="bg-green-50 border-green-300 dark:bg-gray-800/80 dark:border-green-400/70"
+            textColor="text-green-800"
           />
           
           <StatusSection
             title="ลาป่วย/ลากิจ"
             employees={employeesByStatus.leave}
             icon={<UserX className="h-4 w-4" />}
-            bgColor="bg-red-50 border-red-200 dark:bg-red-800 dark:border-red-400/80"
-            textColor="text-red-800 dark:text-white"
+            bgColor="bg-red-50 border-red-300 dark:bg-gray-800/80 dark:border-red-400/70"
+            textColor="text-red-800"
           />
           
           <StatusSection
             title="ไม่รายงาน"
             employees={employeesByStatus.notReported}
             icon={<AlertTriangle className="h-4 w-4" />}
-            bgColor="bg-yellow-50 border-yellow-200 dark:bg-yellow-800 dark:border-yellow-400/80"
-            textColor="text-yellow-800 dark:text-white"
+            bgColor="bg-yellow-50 border-yellow-300 dark:bg-gray-800/80 dark:border-amber-400/70"
+            textColor="text-yellow-800"
           />
         </div>
       </CardContent>
