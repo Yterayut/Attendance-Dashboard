@@ -129,24 +129,24 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             title="เข้างาน"
             employees={employeesByStatus.present}
             icon={<UserCheck className="h-4 w-4" />}
-            bgColor="bg-green-50 border-green-200 dark:bg-green-900/60 dark:border-green-500/70"
-            textColor="text-green-800 dark:text-green-100"
+            bgColor="bg-green-50 border-green-200 dark:bg-green-800 dark:border-green-400/80"
+            textColor="text-green-800 dark:text-white"
           />
           
           <StatusSection
             title="ลาป่วย/ลากิจ"
             employees={employeesByStatus.leave}
             icon={<UserX className="h-4 w-4" />}
-            bgColor="bg-red-50 border-red-200 dark:bg-red-900/60 dark:border-red-500/70"
-            textColor="text-red-800 dark:text-red-100"
+            bgColor="bg-red-50 border-red-200 dark:bg-red-800 dark:border-red-400/80"
+            textColor="text-red-800 dark:text-white"
           />
           
           <StatusSection
             title="ไม่รายงาน"
             employees={employeesByStatus.notReported}
             icon={<AlertTriangle className="h-4 w-4" />}
-            bgColor="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/60 dark:border-yellow-500/70"
-            textColor="text-yellow-800 dark:text-amber-100"
+            bgColor="bg-yellow-50 border-yellow-200 dark:bg-yellow-800 dark:border-yellow-400/80"
+            textColor="text-yellow-800 dark:text-white"
           />
         </div>
       </CardContent>
