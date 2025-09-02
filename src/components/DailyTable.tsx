@@ -48,11 +48,15 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
     textColor: string;
   }) => (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
-      <div className="flex items-center gap-2 mb-3">
-        <div className={`${textColor} dark:text-white`}>{icon}</div>
-        <h3 className={`font-semibold text-sm ${textColor} dark:text-white drop-shadow-sm`}>
-          {title} ({employees.filter(emp => emp !== '—').length} คน)
-        </h3>
+      <div className="mb-3">
+        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-white/70 text-slate-800 backdrop-blur-sm dark:bg-black/30 dark:text-white">
+          <div className="shrink-0">
+            {icon}
+          </div>
+          <h3 className="font-semibold text-sm drop-shadow-sm">
+            {title} ({employees.filter(emp => emp !== '—').length} คน)
+          </h3>
+        </div>
       </div>
       {employees.length > 0 ? (
         <div className="space-y-2">
