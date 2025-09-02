@@ -100,11 +100,11 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
   if (!isVisible) return null;
 
   return (
-    <Card className="bg-white/80 dark:bg-gray-800/90 backdrop-blur-md shadow-lg border-0 rounded-2xl mb-4">
+    <Card className="bg-[var(--panel-bg)] backdrop-blur-md shadow-lg border-0 rounded-2xl mb-4">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/80 text-gray-900 border border-black/10 backdrop-blur-sm dark:bg-black/50 dark:text-white dark:border-white/10 shadow-sm">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[var(--chip-bg)] text-[var(--on-surface)] border border-[var(--chip-border)] backdrop-blur-sm shadow-sm">
               <Filter className="h-5 w-5 text-blue-600 dark:text-blue-300" />
               ตัวกรองขั้นสูง
               {getActiveFilterCount() > 0 && (
@@ -117,7 +117,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
           <div className="flex gap-2">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="bg-white/70 dark:bg-gray-700/70 dark:text-white dark:border-gray-600">
+                <Button variant="outline" size="sm" className="bg-[var(--chip-bg)] text-[var(--on-surface)] dark:text-white dark:border-gray-600">
                   <Filter className="h-4 w-4 mr-2" />
                   ตั้งค่าขั้นสูง
                 </Button>
@@ -251,7 +251,7 @@ export function AdvancedFilter({ onFilterChange, onExport, isVisible }: Advanced
               </DialogContent>
             </Dialog>
 
-            <Button variant="outline" size="sm" onClick={clearAllFilters} className="bg-white/70 dark:bg-gray-700/70 dark:text-white dark:border-gray-600">
+            <Button variant="outline" size="sm" onClick={clearAllFilters} className="bg-[var(--chip-bg)] text-[var(--on-surface)] dark:text-white dark:border-gray-600">
               <X className="h-4 w-4 mr-2" />
               ล้าง
             </Button>

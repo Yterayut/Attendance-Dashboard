@@ -43,6 +43,25 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Dark-mode tokenization: shared surface + status colors */
+  --surface-1: oklch(0.985 0 0); /* base card/light surface */
+  --surface-2: oklch(0.96 0 0);
+  --on-surface: var(--foreground);
+  --on-surface-muted: oklch(0.45 0 0);
+
+  /* Header chip / panel tokens */
+  --chip-bg: rgba(255, 255, 255, 0.8);
+  --chip-border: rgba(0, 0, 0, 0.1);
+  --panel-bg: rgba(255, 255, 255, 0.8);
+
+  /* Status tokens */
+  --status-present-fg: #065f46; /* emerald-800 */
+  --status-present-bg: #ecfdf5; /* emerald-50 */
+  --status-leave-fg: #991b1b;   /* red-800 */
+  --status-leave-bg: #fef2f2;   /* red-50 */
+  --status-notrep-fg: #92400e;  /* amber-700 */
+  --status-notrep-bg: #fffbeb;  /* amber-50 */
 }
 
 .dark {
@@ -82,6 +101,23 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+
+  /* Dark-mode tokenization */
+  --surface-1: oklch(0.205 0 0); /* near gray-800 */
+  --surface-2: oklch(0.269 0 0);
+  --on-surface: oklch(0.985 0 0);
+  --on-surface-muted: oklch(0.708 0 0);
+
+  --chip-bg: rgba(0, 0, 0, 0.5);
+  --chip-border: rgba(255, 255, 255, 0.1);
+  --panel-bg: rgba(31, 41, 55, 0.8); /* gray-800/80 */
+
+  --status-present-fg: #86efac; /* emerald-300 */
+  --status-present-bg: #064e3b; /* emerald-900 */
+  --status-leave-fg: #fca5a5;   /* red-300 */
+  --status-leave-bg: #7f1d1d;   /* red-900 */
+  --status-notrep-fg: #fcd34d;  /* amber-300 */
+  --status-notrep-bg: #78350f;  /* amber-900 */
 }
 
 @theme inline {

@@ -49,7 +49,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
   }) => (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
       <div className="mb-3">
-        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-white/80 text-slate-800 backdrop-blur-sm dark:bg-black/50 dark:text-white border border-black/10 dark:border-white/10 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-[var(--chip-bg)] text-[var(--on-surface)] border border-[var(--chip-border)] backdrop-blur-sm shadow-sm">
           <div className="shrink-0 text-current">
             {icon}
           </div>
@@ -61,13 +61,13 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
       {employees.length > 0 ? (
         <div className="space-y-2">
           {employees.filter(emp => emp !== '—').map((employee, index) => (
-            <div key={index} className={`px-3 py-2 rounded-lg bg-white/60 dark:bg-gray-700/80 text-sm font-semibold text-gray-800 dark:text-white`}> 
+            <div key={index} className={`px-3 py-2 rounded-lg bg-[var(--panel-bg)] text-sm font-semibold text-[var(--on-surface)]`}> 
               {employee}
             </div>
           ))}
         </div>
       ) : (
-        <div className={`text-sm opacity-100 text-gray-600 dark:text-gray-300`}>ไม่มีรายชื่อ</div>
+        <div className={`text-sm opacity-100 text-[color:var(--on-surface-muted)]`}>ไม่มีรายชื่อ</div>
       )}
     </div>
   );
@@ -133,7 +133,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             title="เข้างาน"
             employees={employeesByStatus.present}
             icon={<UserCheck className="h-4 w-4" />}
-            bgColor="bg-green-50 border-green-300 dark:bg-gray-800/80 dark:border-green-400/70"
+            bgColor="bg-[var(--panel-bg)] border-[var(--status-present-fg)]"
             textColor="text-green-800"
           />
           
@@ -141,7 +141,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             title="ลาป่วย/ลากิจ"
             employees={employeesByStatus.leave}
             icon={<UserX className="h-4 w-4" />}
-            bgColor="bg-red-50 border-red-300 dark:bg-gray-800/80 dark:border-red-400/70"
+            bgColor="bg-[var(--panel-bg)] border-[var(--status-leave-fg)]"
             textColor="text-red-800"
           />
           
@@ -149,7 +149,7 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             title="ไม่รายงาน"
             employees={employeesByStatus.notReported}
             icon={<AlertTriangle className="h-4 w-4" />}
-            bgColor="bg-yellow-50 border-yellow-300 dark:bg-gray-800/80 dark:border-amber-400/70"
+            bgColor="bg-[var(--panel-bg)] border-[var(--status-notrep-fg)]"
             textColor="text-yellow-800"
           />
         </div>
