@@ -85,8 +85,9 @@ export const exportToPDF = async (elementId: string, filename: string = 'attenda
     }
 
     // Create canvas from the element with better options
-    const canvas = await html2canvas(element, {
-      scale: 1.5,
+    // html2canvas 1.4.x ไม่รองรับสีรูปแบบ oklch → override ตัวแปรสีใน clone เป็น HEX/RGB ชั่วคราว
+    const renderWithHtml2Canvas = async () => html2canvas(element, {
+      scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
@@ -95,8 +96,82 @@ export const exportToPDF = async (elementId: string, filename: string = 'attenda
       scrollX: 0,
       scrollY: 0,
       windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight
+      windowHeight: window.innerHeight,
+      foreignObjectRendering: true,
+      onclone: (doc) => {
+        const style = doc.createElement('style');
+        style.textContent = `
+          :root { --background:#ffffff; --foreground:#0f172a; --card:#ffffff; --card-foreground:#0f172a; --popover:#ffffff; --popover-foreground:#0f172a; --primary:#1e293b; --primary-foreground:#ffffff; --secondary:#f1f5f9; --secondary-foreground:#0f172a; --muted:#e2e8f0; --muted-foreground:#64748b; --accent:#e2e8f0; --accent-foreground:#0f172a; --destructive:#ef4444; --destructive-foreground:#ffffff; --border:rgba(0,0,0,0.1); --input:#f8fafc; --ring:#94a3b8; }
+          .dark { --background:#0b1220; --foreground:#e5e7eb; --card:#0b1220; --card-foreground:#e5e7eb; --popover:#0b1220; --popover-foreground:#e5e7eb; --primary:#e5e7eb; --primary-foreground:#111827; --secondary:#1f2937; --secondary-foreground:#e5e7eb; --muted:#1f2937; --muted-foreground:#9ca3af; --accent:#1f2937; --accent-foreground:#e5e7eb; --destructive:#b91c1c; --destructive-foreground:#ffffff; --border:#374151; --input:#374151; --ring:#6b7280; }
+          * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          /* ปิด gradient ที่อาจประกอบด้วย oklch เพื่อกัน parser error ใน html2canvas */
+          * { background-image: none !important; }
+        `;
+        doc.head.appendChild(style);
+
+        // Sanitize any inline <style> rules within the cloned doc that still contain oklch()
+        doc.querySelectorAll('style').forEach((el) => {
+          try {
+            const txt = el.textContent || '';
+            if (txt.includes('oklch(')) {
+              el.textContent = txt.replace(/oklch\([^)]*\)/g, '#1e293b');
+            }
+          } catch {}
+        });
+
+        // Replace external/linked stylesheets that might still include oklch()
+        // by inlining a sanitized <style> (same-origin only; guard with try/catch)
+        try {
+          const sheets = Array.from((doc as any).styleSheets || []);
+          sheets.forEach((ss: any) => {
+            const owner = ss?.ownerNode as HTMLElement | null;
+            if (!owner) return;
+            let cssText = '';
+            try {
+              const rules = ss.cssRules as any;
+              if (!rules) return;
+              for (let i = 0; i < rules.length; i++) cssText += rules[i].cssText + '\n';
+            } catch {
+              // cross-origin or unreadable stylesheet; skip
+              return;
+            }
+            if (cssText && cssText.includes('oklch(')) {
+              const rep = cssText.replace(/oklch\([^)]*\)/g, '#1e293b');
+              const s = doc.createElement('style');
+              s.textContent = rep;
+              owner.parentNode?.insertBefore(s, owner.nextSibling);
+              owner.remove();
+            }
+          });
+        } catch {}
+      }
     });
+
+    let canvas: HTMLCanvasElement;
+    try {
+      canvas = await renderWithHtml2Canvas();
+    } catch (err: any) {
+      // Fallback: ใช้ dom-to-image-more (SVG foreignObject) เมื่อเจอ oklch หรือ parser error อื่นๆ
+      const message = String(err?.message || '');
+      if (message.includes('oklch') || message.includes('unsupported')) {
+        const { toPng } = await import('dom-to-image-more');
+        const dataUrl = await toPng(element as HTMLElement, {
+          bgcolor: '#ffffff',
+          cacheBust: true,
+          style: { backgroundImage: 'none' },
+          filter: () => true,
+        });
+        // สร้างแคนวาสจาก dataUrl เพื่อใช้ขั้นตอนเดิมต่อได้
+        const img = new Image();
+        await new Promise((res, rej) => { img.onload = () => res(null as any); img.onerror = rej; img.src = dataUrl; });
+        const c = document.createElement('canvas');
+        c.width = img.width; c.height = img.height;
+        const ctx = c.getContext('2d')!; ctx.drawImage(img, 0, 0);
+        canvas = c;
+      } else {
+        throw err;
+      }
+    }
 
     const imgData = canvas.toDataURL('image/png', 0.95);
     
