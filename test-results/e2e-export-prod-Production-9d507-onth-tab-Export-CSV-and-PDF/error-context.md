@@ -1,0 +1,191 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - heading "ระบบบริหารการเข้างาน" [level=1] [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - img [ref=e14]
+        - generic [ref=e17]: Asia/Bangkok • วันอังคารที่ 2 กันยายน 2568
+      - generic [ref=e18]:
+        - button "สลับโหมดธีม" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20] [cursor=pointer]: สลับโหมดธีม
+        - button "ตั้งค่าธีม" [ref=e21] [cursor=pointer]:
+          - img
+          - img
+          - generic [ref=e22] [cursor=pointer]: ตั้งค่าธีม
+  - generic [ref=e23]:
+    - tablist [ref=e25]:
+      - tab "📅 รายวัน" [ref=e26] [cursor=pointer]
+      - tab "📊 รายเดือน" [selected] [ref=e27] [cursor=pointer]
+      - tab "👤 รายบุคคล" [ref=e28] [cursor=pointer]
+    - generic [ref=e29]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - paragraph [ref=e37]: เข้างาน
+          - generic [ref=e38]:
+            - generic [ref=e39]: "16"
+            - generic [ref=e40]: /18
+          - generic [ref=e41]:
+            - generic [ref=e42]: 89%
+            - generic [ref=e43]:
+              - img [ref=e44]
+              - generic [ref=e47]: เป้าหมายดี
+        - img [ref=e49]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - paragraph [ref=e59]: ลาป่วย/ลากิจ
+          - generic [ref=e60]:
+            - generic [ref=e61]: "2"
+            - generic [ref=e62]: /18
+          - generic [ref=e63]:
+            - generic [ref=e64]: 11%
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - generic [ref=e69]: อยู่ในเกณฑ์
+        - img [ref=e71]
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - paragraph [ref=e82]: ไม่รายงาน
+          - generic [ref=e83]:
+            - generic [ref=e84]: "0"
+            - generic [ref=e85]: /18
+          - generic [ref=e87]: 0%
+        - img [ref=e89]
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - generic [ref=e95]:
+          - img [ref=e96]
+          - generic [ref=e100]: เชื่อมต่อ
+        - generic [ref=e102]:
+          - img [ref=e103]
+          - generic [ref=e106]: "อัพเดทล่าสุด: เมื่อสักครู่"
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - img [ref=e109]
+            - generic [ref=e114]: 16 คน
+          - generic [ref=e115]:
+            - img [ref=e116]
+            - generic [ref=e119]: 89%
+      - generic [ref=e120]:
+        - button "เริ่มอัพเดทอัตโนมัติ" [ref=e121] [cursor=pointer]:
+          - img
+          - text: เริ่มอัพเดท
+        - button "รีเฟรชข้อมูล" [ref=e122] [cursor=pointer]:
+          - img
+          - generic [ref=e123] [cursor=pointer]: รีเฟรชข้อมูล
+        - button "การแจ้งเตือน" [ref=e124] [cursor=pointer]:
+          - img
+          - generic [ref=e125] [cursor=pointer]: การแจ้งเตือน
+    - generic [ref=e126]:
+      - generic [ref=e128]:
+        - heading "ตัวกรองขั้นสูง" [level=4] [ref=e129]:
+          - generic [ref=e130]:
+            - img [ref=e131]
+            - text: ตัวกรองขั้นสูง
+        - generic [ref=e133]:
+          - button "ตั้งค่าขั้นสูง" [ref=e134] [cursor=pointer]:
+            - img
+            - text: ตั้งค่าขั้นสูง
+          - button "ล้าง" [ref=e135] [cursor=pointer]:
+            - img
+            - text: ล้าง
+      - generic [ref=e137]:
+        - button "Export Excel" [ref=e138] [cursor=pointer]:
+          - img
+          - text: Export Excel
+        - button "Export CSV" [active] [ref=e139] [cursor=pointer]:
+          - img
+          - text: Export CSV
+        - button "Export PDF" [ref=e140] [cursor=pointer]:
+          - img
+          - text: Export PDF
+    - tabpanel "📊 รายเดือน" [ref=e141]:
+      - generic [ref=e142]:
+        - heading "เลือกช่วงเดือน" [level=4] [ref=e144]:
+          - img [ref=e146]
+          - text: เลือกช่วงเดือน
+        - generic [ref=e148]:
+          - generic [ref=e149]:
+            - generic [ref=e150]: ปี
+            - spinbutton [ref=e151]: "2025"
+          - generic [ref=e152]:
+            - generic [ref=e153]: จากเดือน
+            - combobox [ref=e154] [cursor=pointer]:
+              - generic: กันยายน
+              - img
+          - generic [ref=e155]:
+            - generic [ref=e156]: ถึงเดือน
+            - combobox [ref=e157] [cursor=pointer]:
+              - generic: กันยายน
+              - img
+      - generic [ref=e160]:
+        - heading "ช่วงเดือนที่ได้:" [level=3] [ref=e161]:
+          - generic [ref=e162]: "ช่วงเดือนที่ได้:"
+        - generic [ref=e163]:
+          - button "ไตรมาส 1 (ม.ค.-มี.ค.)" [ref=e164] [cursor=pointer]
+          - button "ไตรมาส 2 (เม.ษ.-มิ.ย.)" [ref=e165] [cursor=pointer]
+          - button "ไตรมาส 3 (ก.ค.-ก.ย.)" [ref=e166] [cursor=pointer]
+          - button "ไตรมาส 4 (ต.ค.-ธ.ค.)" [ref=e167] [cursor=pointer]
+          - button "ครึ่งแรก (ม.ค.-มิ.ย.)" [ref=e168] [cursor=pointer]
+          - button "ครึ่งหลัง (ก.ค.-ธ.ค.)" [ref=e169] [cursor=pointer]
+        - generic [ref=e171]:
+          - generic [ref=e172]: 📋
+          - generic [ref=e173]: "แสดงข้อมูลช่วงเดือน: กันยายน 2568"
+      - generic [ref=e175]:
+        - heading "ข้อมูลรายวัน (รายเดือน) - 2 วัน" [level=4] [ref=e177]:
+          - img [ref=e179]
+          - text: ข้อมูลรายวัน (รายเดือน) - 2 วัน
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e183]: วันที่
+            - generic [ref=e184]: เข้างาน
+            - generic [ref=e185]: ลา
+            - generic [ref=e186]: ไม่ระบุงาน
+            - generic [ref=e187]: รวม
+            - generic [ref=e188]: สถานะ
+          - generic [ref=e189]:
+            - generic [ref=e191]:
+              - generic [ref=e192]: จ. 1 ก.ย. 2568
+              - generic [ref=e194]:
+                - img [ref=e195]
+                - generic [ref=e199]: "8"
+              - generic [ref=e201]:
+                - img [ref=e202]
+                - generic [ref=e207]: "1"
+              - generic [ref=e209]:
+                - img [ref=e210]
+                - generic [ref=e212]: "0"
+              - generic [ref=e214]: "9"
+              - generic [ref=e215]: 8 เข้างาน 1 ลา
+            - generic [ref=e217]:
+              - generic [ref=e218]: อ. 2 ก.ย. 2568
+              - generic [ref=e220]:
+                - img [ref=e221]
+                - generic [ref=e225]: "8"
+              - generic [ref=e227]:
+                - img [ref=e228]
+                - generic [ref=e233]: "1"
+              - generic [ref=e235]:
+                - img [ref=e236]
+                - generic [ref=e238]: "0"
+              - generic [ref=e240]: "9"
+              - generic [ref=e241]: 8 เข้างาน 1 ลา
+          - generic [ref=e243]:
+            - generic [ref=e244]: สรุปรวม 2 วัน
+            - generic [ref=e245]:
+              - generic [ref=e246]:
+                - img [ref=e247]
+                - generic [ref=e251]: "เข้างาน: 16"
+              - generic [ref=e252]:
+                - img [ref=e253]
+                - generic [ref=e258]: "ลา: 2"
+              - generic [ref=e259]:
+                - img [ref=e260]
+                - generic [ref=e262]: "ไม่ระบุงาน: 0"
+              - generic [ref=e263]: "รวม: 18"
+```

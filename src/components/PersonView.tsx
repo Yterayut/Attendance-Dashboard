@@ -191,7 +191,7 @@ export function PersonView({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="person-content" data-export="true">
       {/* Employee Selection */}
       <Card className="bg-white dark:bg-gray-800 shadow-sm border-0 rounded-2xl">
         <CardContent className="p-6">
@@ -201,7 +201,7 @@ export function PersonView({
               {selectedEmployee && (
                 <div className="flex items-center gap-2">
                   <Button
-                    onClick={async () => exportToPDF()}
+                    onClick={async () => exportToPDF('person-content', `person_${selectedEmployee}_${filterInfo.displayText}`)}
                     size="sm"
                     className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
                   >

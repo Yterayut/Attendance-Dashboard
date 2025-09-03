@@ -1,0 +1,121 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e6]
+        - heading "ระบบบริหารการเข้างาน" [level=1] [ref=e11]
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - img [ref=e14]
+          - generic [ref=e17]: Asia/Bangkok • วันอังคารที่ 2 กันยายน 2568
+        - generic [ref=e18]:
+          - button "สลับโหมดธีม" [ref=e19] [cursor=pointer]:
+            - img
+            - generic [ref=e20] [cursor=pointer]: สลับโหมดธีม
+          - button "ตั้งค่าธีม" [ref=e21] [cursor=pointer]:
+            - img
+            - img
+            - generic [ref=e22] [cursor=pointer]: ตั้งค่าธีม
+    - generic [ref=e23]:
+      - tablist [ref=e25]:
+        - tab "📅 รายวัน" [ref=e26] [cursor=pointer]
+        - tab "📊 รายเดือน" [ref=e27] [cursor=pointer]
+        - tab "👤 รายบุคคล" [active] [selected] [ref=e28] [cursor=pointer]
+      - tabpanel "👤 รายบุคคล" [ref=e29]:
+        - generic [ref=e30]:
+          - heading "เลือกบุคคลและช่วงเวลา" [level=4] [ref=e32]:
+            - img [ref=e34]
+            - text: เลือกบุคคลและช่วงเวลา
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: ชื่อพนักงาน
+              - combobox [ref=e42] [cursor=pointer]:
+                - generic: 👤 เจ
+                - img
+            - generic [ref=e43]:
+              - generic [ref=e44]: ช่วงเวลา
+              - combobox [ref=e45] [cursor=pointer]:
+                - generic: 📊 รายเดือน
+                - img
+            - generic [ref=e46]:
+              - generic [ref=e47]: ค่าอ้างอิง
+              - combobox [ref=e48] [cursor=pointer]:
+                - generic: กันยายน
+                - img
+        - generic [ref=e49]:
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - generic [ref=e54]: เลือกพนักงาน
+              - generic [ref=e55]:
+                - button "Export PDF" [ref=e56] [cursor=pointer]:
+                  - img
+                  - text: Export PDF
+                - button "Export CSV" [ref=e57] [cursor=pointer]:
+                  - img
+                  - text: Export CSV
+            - combobox [ref=e58] [cursor=pointer]:
+              - generic:
+                - generic:
+                  - img
+                  - generic: เจ
+              - img
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - img [ref=e61]
+                - generic [ref=e64]:
+                  - text: "พนักงานที่เลือก:"
+                  - generic [ref=e65]: เจ
+              - generic [ref=e66]:
+                - img [ref=e67]
+                - generic [ref=e69]: "ข้อมูลmonth: 2025-09"
+          - generic [ref=e70]:
+            - generic [ref=e71]:
+              - 'heading "สถิติการเข้างาน: เจ month: 2025-09" [level=4] [ref=e73]':
+                - img [ref=e74]
+                - text: "สถิติการเข้างาน: เจ"
+                - generic [ref=e76]: "month: 2025-09"
+              - generic [ref=e78]:
+                - generic [ref=e79]:
+                  - generic [ref=e82]: เข้างาน
+                  - generic [ref=e83]: "2"
+                  - generic [ref=e84]: 100%
+                - generic [ref=e85]:
+                  - generic [ref=e88]: ลาป่วย/ลากิจ
+                  - generic [ref=e89]: "0"
+                  - generic [ref=e90]: 0%
+                - generic [ref=e91]:
+                  - generic [ref=e94]: ไม่รายงาน
+                  - generic [ref=e95]: "0"
+                  - generic [ref=e96]: 0%
+                - generic [ref=e97]:
+                  - generic [ref=e100]: รวมทั้งหมด
+                  - generic [ref=e101]: "2"
+                  - generic [ref=e102]: วัน
+            - generic [ref=e103]:
+              - heading "กราฟสถิติการเข้างานรายเดือน (6 เดือนล่าสุด)" [level=4] [ref=e105]:
+                - img [ref=e106]
+                - text: กราฟสถิติการเข้างานรายเดือน (6 เดือนล่าสุด)
+              - application [ref=e112]:
+                - generic [ref=e120]: ก.ย. 2568
+                - generic [ref=e122]:
+                  - generic [ref=e125]: "0"
+                  - generic [ref=e128]: "25"
+                  - generic [ref=e131]: "50"
+                  - generic [ref=e134]: "75"
+                  - generic [ref=e137]: "100"
+            - generic [ref=e141]:
+              - heading "ประวัติการเข้างานในช่วงเวลาที่เลือก" [level=4] [ref=e143]:
+                - img [ref=e144]
+                - text: ประวัติการเข้างานในช่วงเวลาที่เลือก
+              - generic [ref=e147]:
+                - generic [ref=e149]:
+                  - generic [ref=e150]: อ. 2 ก.ย. 2568
+                  - generic [ref=e151]: เข้างาน
+                - generic [ref=e153]:
+                  - generic [ref=e154]: จ. 1 ก.ย. 2568
+                  - generic [ref=e155]: เข้างาน
+  - generic [ref=e156]: "0"
+```

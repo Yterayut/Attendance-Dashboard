@@ -1,0 +1,86 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - heading "ระบบบริหารการเข้างาน" [level=1] [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - img [ref=e14]
+        - generic [ref=e17]: Asia/Bangkok • วันอังคารที่ 2 กันยายน 2568
+      - generic [ref=e18]:
+        - button "สลับโหมดธีม" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20] [cursor=pointer]: สลับโหมดธีม
+        - button "ตั้งค่าธีม" [ref=e21] [cursor=pointer]:
+          - img
+          - img
+          - generic [ref=e22] [cursor=pointer]: ตั้งค่าธีม
+  - generic [ref=e23]:
+    - tablist [ref=e25]:
+      - tab "📅 รายวัน" [active] [selected] [ref=e26] [cursor=pointer]
+      - tab "📊 รายเดือน" [ref=e27] [cursor=pointer]
+      - tab "👤 รายบุคคล" [ref=e28] [cursor=pointer]
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - img [ref=e77]
+          - generic [ref=e81]: เชื่อมต่อ
+        - generic [ref=e83]:
+          - img [ref=e84]
+          - generic [ref=e87]: "อัพเดทล่าสุด: เมื่อสักครู่"
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - img [ref=e90]
+            - generic [ref=e95]: 0 คน
+          - generic [ref=e96]:
+            - img [ref=e97]
+            - generic [ref=e100]: 0%
+      - generic [ref=e101]:
+        - button "เริ่มอัพเดทอัตโนมัติ" [ref=e102] [cursor=pointer]:
+          - img
+          - text: เริ่มอัพเดท
+        - button "รีเฟรชข้อมูล" [ref=e103] [cursor=pointer]:
+          - img
+          - generic [ref=e104] [cursor=pointer]: รีเฟรชข้อมูล
+        - button "การแจ้งเตือน" [ref=e105] [cursor=pointer]:
+          - img
+          - generic [ref=e106] [cursor=pointer]: การแจ้งเตือน
+    - generic [ref=e107]:
+      - generic [ref=e109]:
+        - heading "ตัวกรองขั้นสูง" [level=4] [ref=e110]:
+          - generic [ref=e111]:
+            - img [ref=e112]
+            - text: ตัวกรองขั้นสูง
+        - generic [ref=e114]:
+          - button "ตั้งค่าขั้นสูง" [ref=e115] [cursor=pointer]:
+            - img
+            - text: ตั้งค่าขั้นสูง
+          - button "ล้าง" [ref=e116] [cursor=pointer]:
+            - img
+            - text: ล้าง
+      - generic [ref=e118]:
+        - button "Export Excel" [ref=e119] [cursor=pointer]:
+          - img
+          - text: Export Excel
+        - button "Export CSV" [ref=e120] [cursor=pointer]:
+          - img
+          - text: Export CSV
+        - button "Export PDF" [ref=e121] [cursor=pointer]:
+          - img
+          - text: Export PDF
+    - tabpanel "📅 รายวัน" [ref=e122]:
+      - generic [ref=e123]:
+        - heading "เลือกวันที่" [level=4] [ref=e125]:
+          - img [ref=e127]
+          - text: เลือกวันที่
+        - button "วันอังคารที่ 2 กันยายน 2568" [ref=e130] [cursor=pointer]:
+          - img
+          - generic [ref=e131] [cursor=pointer]: วันอังคารที่ 2 กันยายน 2568
+      - img [ref=e136]
+      - generic [ref=e171]:
+        - button "Export CSV" [ref=e172] [cursor=pointer]
+        - button "Export PDF" [ref=e173] [cursor=pointer]
+```

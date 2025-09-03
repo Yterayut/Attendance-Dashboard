@@ -693,7 +693,7 @@ export default function AttendanceDashboard() {
               const rows = monthDays.map(d=>({ date: d.date, employee: '', status: `present:${d.present}|leave:${d.leave}|not_reported:${d.notReported}`, department: '—' }));
               exportToCSV(rows as any, `month_${selectedMonthYear}_${String(selectedFromMonth+1).padStart(2,'0')}-${String(selectedToMonth+1).padStart(2,'0')}`);
             }}>Export CSV</Button>
-            <Button variant="outline" size="sm" onClick={async ()=>{ await exportToPDF('dashboard-content', `month_${selectedMonthYear}_${String(selectedFromMonth+1).padStart(2,'0')}-${String(selectedToMonth+1).padStart(2,'0')}`)}}>Export PDF</Button>
+            <Button variant="outline" size="sm" onClick={async ()=>{ await exportToPDF('month-content', `month_${selectedMonthYear}_${String(selectedFromMonth+1).padStart(2,'0')}-${String(selectedToMonth+1).padStart(2,'0')}`)}}>Export PDF</Button>
           </div>
         </TabsContent>
 
@@ -777,7 +777,7 @@ export default function AttendanceDashboard() {
             </CardContent>
           </Card>
 
-          <div data-export="true">
+          <div id="month-content" data-export="true">
             <MonthlyDaysTable 
               data={monthDays}
               isLoading={isLoading}
