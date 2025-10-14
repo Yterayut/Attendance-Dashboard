@@ -59,6 +59,7 @@ export default function AttendanceDashboard() {
   const [selectedEmployee, setSelectedEmployee] = useState<EmpName>('เจ');
   const [personRange, setPersonRange] = useState<'day'|'month'|'year'>('month');
   const [personOn, setPersonOn] = useState<string>(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`);
+  const [personMonthYear, setPersonMonthYear] = useState(now.getFullYear());
 
   // Period presets for month tab
   const [selectedPeriodPreset, setSelectedPeriodPreset] = useState<string>('');
@@ -388,14 +389,25 @@ export default function AttendanceDashboard() {
   // Get display text for current period
   const getCurrentPeriodDisplay = () => {
     if (selectedPeriodPreset) return selectedPeriodPreset;
-    
+
     const from = thaiMonths[selectedFromMonth]?.label || 'มกราคม';
     const to = thaiMonths[selectedToMonth]?.label || 'สิงหาคม';
-    
+
     if (selectedFromMonth === selectedToMonth) {
       return from;
     }
     return `${from} ถึง ${to}`;
+  };
+
+  // Handler for Person tab month range selection
+  const handlePersonMonthRangeSelect = (fromMonth: number, toMonth: number) => {
+    const year = personMonthYear;
+    // Format: YYYY-MM to YYYY-MM (for API call)
+    const fromDate = `${year}-${String(fromMonth + 1).padStart(2, '0')}`;
+    const toDate = `${year}-${String(toMonth + 1).padStart(2, '0')}`;
+
+    // Update personOn to represent the range
+    setPersonOn(`${fromDate} ถึง ${toDate}`);
   };
 
 
@@ -972,13 +984,40 @@ export default function AttendanceDashboard() {
             </CardContent>
           </Card>
 
-          <PersonView 
+          {/* Year Selection for Month Range - Show only when personRange is 'month' */}
+          {personRange === 'month' && (
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-xl text-slate-700 dark:text-slate-300">
+                  <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800/40 dark:to-indigo-800/40 rounded-xl">
+                    <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  เลือกปี
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ปี</label>
+                  <Input
+                    type="number"
+                    value={personMonthYear}
+                    onChange={e => setPersonMonthYear(parseInt(e.target.value || `${now.getFullYear()}`))}
+                    className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 focus:ring-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          <PersonView
             data={personItems.map(i=>({ date:i.date, employee:i.name, status:i.status }))}
             allData={allDataForPerson}
             selectedEmployee={selectedEmployee}
             setSelectedEmployee={setSelectedEmployee as any}
             filterInfo={{ period: personRange, displayText: personOn }}
             isLoading={isLoading}
+            personRange={personRange}
+            onMonthRangeSelect={handlePersonMonthRangeSelect}
           />
         </TabsContent>
       </Tabs>

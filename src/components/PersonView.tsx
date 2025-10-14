@@ -30,17 +30,31 @@ interface PersonViewProps {
     displayText: string;
   };
   isLoading: boolean;
+  personRange?: string;
+  onMonthRangeSelect?: (fromMonth: number, toMonth: number) => void;
 }
 
-export function PersonView({ 
-  data, 
-  allData, 
-  selectedEmployee, 
+export function PersonView({
+  data,
+  allData,
+  selectedEmployee,
   setSelectedEmployee,
   filterInfo,
-  isLoading 
+  isLoading,
+  personRange,
+  onMonthRangeSelect
 }: PersonViewProps) {
   const reportRef = useRef<HTMLDivElement>(null);
+
+  // Period presets for month range (same as in AttendanceDashboard)
+  const periodPresets = [
+    { id: 'q1', label: 'ไตรมาส 1 (ม.ค.-มี.ค.)', fromMonth: 0, toMonth: 2 },
+    { id: 'q2', label: 'ไตรมาส 2 (เม.ษ.-มิ.ย.)', fromMonth: 3, toMonth: 5 },
+    { id: 'q3', label: 'ไตรมาส 3 (ก.ค.-ก.ย.)', fromMonth: 6, toMonth: 8 },
+    { id: 'q4', label: 'ไตรมาส 4 (ต.ค.-ธ.ค.)', fromMonth: 9, toMonth: 11 },
+    { id: 'h1', label: 'ครึ่งแรก (ม.ค.-มิ.ย.)', fromMonth: 0, toMonth: 5 },
+    { id: 'h2', label: 'ครึ่งหลัง (ก.ค.-ธ.ค.)', fromMonth: 6, toMonth: 11 },
+  ];
 
   // Get unique employees list
   const employees = useMemo(() => {
@@ -262,6 +276,31 @@ export function PersonView({
           </div>
         </CardContent>
       </Card>
+
+      {/* Period Presets Section - Show only when personRange is 'month' */}
+      {personRange === 'month' && onMonthRangeSelect && (
+        <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <span>ช่วงเดือนที่ได้:</span>
+              </h3>
+
+              <div className="flex flex-wrap gap-3">
+                {periodPresets.map((preset) => (
+                  <button
+                    key={preset.id}
+                    onClick={() => onMonthRangeSelect(preset.fromMonth, preset.toMonth)}
+                    className="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white/60 dark:bg-gray-700/60 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Employee Details */}
       {selectedEmployee && employeeStats ? (
