@@ -60,6 +60,8 @@ export default function AttendanceDashboard() {
   const [personRange, setPersonRange] = useState<'day'|'month'|'year'>('month');
   const [personOn, setPersonOn] = useState<string>(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`);
   const [personMonthYear, setPersonMonthYear] = useState(now.getFullYear());
+  const [personFromMonth, setPersonFromMonth] = useState<number>(now.getMonth());
+  const [personToMonth, setPersonToMonth] = useState<number>(now.getMonth());
 
   // Period presets for month tab
   const [selectedPeriodPreset, setSelectedPeriodPreset] = useState<string>('');
@@ -282,13 +284,38 @@ export default function AttendanceDashboard() {
   useEffect(()=>{
     if (tab!=='person') return;
     setIsLoading(true);
-    const url = `${API}?route=person&name=${encodeURIComponent(selectedEmployee)}&range=${personRange}&on=${encodeURIComponent(personOn)}`;
-    fetch(url)
-      .then(r=>r.json())
-      .then(j=>setPersonItems(j?.data?.items ?? []))
-      .catch(()=>setPersonItems([]))
-      .finally(()=>setIsLoading(false));
-  },[API, tab, selectedEmployee, personRange, personOn]);
+
+    // For month range, fetch data for each month and combine
+    if (personRange === 'month') {
+      const promises: Promise<any>[] = [];
+
+      for (let m = personFromMonth; m <= personToMonth; m++) {
+        const monthStr = `${personMonthYear}-${String(m + 1).padStart(2, '0')}`;
+        const url = `${API}?route=person&name=${encodeURIComponent(selectedEmployee)}&range=month&on=${encodeURIComponent(monthStr)}`;
+        promises.push(
+          fetch(url)
+            .then(r => r.json())
+            .then(j => j?.data?.items ?? [])
+            .catch(() => [])
+        );
+      }
+
+      Promise.all(promises)
+        .then(results => {
+          const combined = results.flat();
+          setPersonItems(combined);
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      // For day and year, use original logic
+      const url = `${API}?route=person&name=${encodeURIComponent(selectedEmployee)}&range=${personRange}&on=${encodeURIComponent(personOn)}`;
+      fetch(url)
+        .then(r=>r.json())
+        .then(j=>setPersonItems(j?.data?.items ?? []))
+        .catch(()=>setPersonItems([]))
+        .finally(()=>setIsLoading(false));
+    }
+  },[API, tab, selectedEmployee, personRange, personOn, personMonthYear, personFromMonth, personToMonth]);
 
   // ===== Adapters to Figma child components =====
   // SummaryCards: ใช้กับทั้งรายวันและรายเดือน (เลือกชุดที่กำลังแสดง)
@@ -345,8 +372,14 @@ export default function AttendanceDashboard() {
       const to = new Date(selectedMonthYear, selectedToMonth, 1);
       return { period: 'เดือน', displayText: `${from.toLocaleDateString('th-TH',{month:'long'})} – ${to.toLocaleDateString('th-TH',{month:'long', year:'numeric'})}` };
     }
+    // Person tab
+    if (personRange === 'month') {
+      const from = new Date(personMonthYear, personFromMonth, 1);
+      const to = new Date(personMonthYear, personToMonth, 1);
+      return { period: 'เดือน', displayText: `${from.toLocaleDateString('th-TH',{month:'long'})} – ${to.toLocaleDateString('th-TH',{month:'long', year:'numeric'})}` };
+    }
     return { period: personRange==='day'?'วัน':personRange==='month'?'เดือน':'ปี', displayText: personOn };
-  },[tab, selectedDate, selectedMonthYear, selectedFromMonth, selectedToMonth, personRange, personOn]);
+  },[tab, selectedDate, selectedMonthYear, selectedFromMonth, selectedToMonth, personRange, personOn, personMonthYear, personFromMonth, personToMonth]);
 
   const thaiMonths = [
     { value: 0, label: 'มกราคม' },{ value: 1, label: 'กุมภาพันธ์' },{ value: 2, label: 'มีนาคม' },
@@ -401,13 +434,8 @@ export default function AttendanceDashboard() {
 
   // Handler for Person tab month range selection
   const handlePersonMonthRangeSelect = (fromMonth: number, toMonth: number) => {
-    const year = personMonthYear;
-    // Format: YYYY-MM to YYYY-MM (for API call)
-    const fromDate = `${year}-${String(fromMonth + 1).padStart(2, '0')}`;
-    const toDate = `${year}-${String(toMonth + 1).padStart(2, '0')}`;
-
-    // Update personOn to represent the range
-    setPersonOn(`${fromDate} ถึง ${toDate}`);
+    setPersonFromMonth(fromMonth);
+    setPersonToMonth(toMonth);
   };
 
 
