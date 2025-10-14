@@ -32,6 +32,8 @@ interface PersonViewProps {
   isLoading: boolean;
   personRange?: string;
   onMonthRangeSelect?: (fromMonth: number, toMonth: number) => void;
+  personFromMonth?: number;
+  personToMonth?: number;
 }
 
 export function PersonView({
@@ -42,7 +44,9 @@ export function PersonView({
   filterInfo,
   isLoading,
   personRange,
-  onMonthRangeSelect
+  onMonthRangeSelect,
+  personFromMonth = 0,
+  personToMonth = 0
 }: PersonViewProps) {
   const reportRef = useRef<HTMLDivElement>(null);
 
@@ -54,6 +58,13 @@ export function PersonView({
     { id: 'q4', label: 'ไตรมาส 4 (ต.ค.-ธ.ค.)', fromMonth: 9, toMonth: 11 },
     { id: 'h1', label: 'ครึ่งแรก (ม.ค.-มิ.ย.)', fromMonth: 0, toMonth: 5 },
     { id: 'h2', label: 'ครึ่งหลัง (ก.ค.-ธ.ค.)', fromMonth: 6, toMonth: 11 },
+  ];
+
+  const thaiMonths = [
+    { value: 0, label: 'มกราคม' },{ value: 1, label: 'กุมภาพันธ์' },{ value: 2, label: 'มีนาคม' },
+    { value: 3, label: 'เมษายน' },{ value: 4, label: 'พฤษภาคม' },{ value: 5, label: 'มิถุนายน' },
+    { value: 6, label: 'กรกฎาคม' },{ value: 7, label: 'สิงหาคม' },{ value: 8, label: 'กันยายน' },
+    { value: 9, label: 'ตุลาคม' },{ value:10, label: 'พฤศจิกายน' },{ value:11, label: 'ธันวาคม' },
   ];
 
   // Get unique employees list
@@ -281,21 +292,70 @@ export function PersonView({
       {personRange === 'month' && onMonthRangeSelect && (
         <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl border-0 rounded-3xl border border-white/20 dark:border-gray-600/20">
           <CardContent className="pt-6">
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                <span>ช่วงเดือนที่ได้:</span>
-              </h3>
+            <div className="space-y-6">
+              {/* Manual Month Range Selection */}
+              <div className="space-y-3">
+                <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300">
+                  เลือกช่วงเดือน
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">จากเดือน</label>
+                    <Select
+                      value={String(personFromMonth)}
+                      onValueChange={(v) => onMonthRangeSelect(parseInt(v), personToMonth)}
+                    >
+                      <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 dark:focus:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-2xl border-slate-200">
+                        {thaiMonths.map(m => (
+                          <SelectItem key={m.value} value={String(m.value)} className="rounded-lg">
+                            {m.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              <div className="flex flex-wrap gap-3">
-                {periodPresets.map((preset) => (
-                  <button
-                    key={preset.id}
-                    onClick={() => onMonthRangeSelect(preset.fromMonth, preset.toMonth)}
-                    className="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white/60 dark:bg-gray-700/60 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/30"
-                  >
-                    {preset.label}
-                  </button>
-                ))}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ถึงเดือน</label>
+                    <Select
+                      value={String(personToMonth)}
+                      onValueChange={(v) => onMonthRangeSelect(personFromMonth, parseInt(v))}
+                    >
+                      <SelectTrigger className="h-12 text-lg border-2 border-slate-200 dark:border-gray-600 rounded-2xl focus:border-purple-400 dark:focus:border-purple-400 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm text-gray-900 dark:text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-2xl border-slate-200">
+                        {thaiMonths.map(m => (
+                          <SelectItem key={m.value} value={String(m.value)} className="rounded-lg">
+                            {m.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Presets */}
+              <div className="space-y-3">
+                <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <span>ช่วงเดือนที่ได้:</span>
+                </h3>
+
+                <div className="flex flex-wrap gap-3">
+                  {periodPresets.map((preset) => (
+                    <button
+                      key={preset.id}
+                      onClick={() => onMonthRangeSelect(preset.fromMonth, preset.toMonth)}
+                      className="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white/60 dark:bg-gray-700/60 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </CardContent>

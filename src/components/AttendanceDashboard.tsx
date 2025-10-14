@@ -1046,6 +1046,8 @@ export default function AttendanceDashboard() {
             isLoading={isLoading}
             personRange={personRange}
             onMonthRangeSelect={handlePersonMonthRangeSelect}
+            personFromMonth={personFromMonth}
+            personToMonth={personToMonth}
           />
         </TabsContent>
       </Tabs>
