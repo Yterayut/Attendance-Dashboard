@@ -3,13 +3,9 @@ const GOOGLE_APPS_SCRIPT_URL =
 
 export const onRequestPost = async ({ request, waitUntil }: any) => {
   const body = await request.text();
+  const contentType = request.headers.get('content-type') || 'application/json';
 
-  const forward = fetch(GOOGLE_APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'content-type': request.headers.get('content-type') || 'application/json' },
-    body,
-    redirect: 'follow',
-  }).catch(() => undefined);
+  const forward = forwardToGoogleAppsScript(body, contentType);
 
   if (typeof waitUntil === 'function') {
     waitUntil(forward);
@@ -20,6 +16,26 @@ export const onRequestPost = async ({ request, waitUntil }: any) => {
     headers: { 'content-type': 'application/json' },
   });
 };
+
+async function forwardToGoogleAppsScript(body: string, contentType: string) {
+  const first = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'content-type': contentType },
+    body,
+    redirect: 'manual',
+  });
+
+  const location = first.headers.get('location');
+  if (location && first.status >= 300 && first.status < 400) {
+    return fetch(location, {
+      method: 'POST',
+      headers: { 'content-type': contentType },
+      body,
+    });
+  }
+
+  return first;
+}
 
 export const onRequestGet = async () => {
   return new Response(JSON.stringify({ ok: true, service: 'line-webhook-proxy' }), {
