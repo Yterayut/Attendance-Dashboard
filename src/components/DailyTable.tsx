@@ -11,6 +11,7 @@ interface DailyTableProps {
     status: 'present' | 'leave' | 'not_reported';
     checkIn?: string | null;
     checkOut?: string | null;
+    reason?: string | null;
   }>;
   period: string;
   isLoading: boolean;
@@ -19,20 +20,21 @@ interface DailyTableProps {
 export function DailyTable({ data, period, isLoading }: DailyTableProps) {
   // Group employees by status for the selected date
   const employeesByStatus = useMemo(() => {
-    const present: string[] = [];
-    const leave: string[] = [];
-    const notReported: string[] = [];
+    const present: Array<{ name: string; reason?: string | null }> = [];
+    const leave: Array<{ name: string; reason?: string | null }> = [];
+    const notReported: Array<{ name: string; reason?: string | null }> = [];
     
     data.forEach(record => {
+      const item = { name: record.employee, reason: record.reason };
       switch (record.status) {
         case 'present':
-          present.push(record.employee);
+          present.push(item);
           break;
         case 'leave':
-          leave.push(record.employee);
+          leave.push(item);
           break;
         case 'not_reported':
-          notReported.push(record.employee);
+          notReported.push(item);
           break;
       }
     });
@@ -42,16 +44,16 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
 
   const StatusSection = ({ title, employees, icon, bgColor, textColor }: {
     title: string;
-    employees: string[];
+    employees: Array<{ name: string; reason?: string | null }>;
     icon: React.ReactNode;
     bgColor: string;
     textColor: string;
   }) => {
     const prepared = employees.map((e) => {
-      if (typeof e === 'string' && e.trim()) return e
-      return '—'
+      if (e.name.trim()) return e
+      return { name: '—', reason: '' }
     })
-    const isEffectivelyEmpty = prepared.length === 0 || prepared.every(e => e === '—')
+    const isEffectivelyEmpty = prepared.length === 0 || prepared.every(e => e.name === '—')
 
     return (
     <div className={`p-4 rounded-xl border ${bgColor}`}>
@@ -62,16 +64,19 @@ export function DailyTable({ data, period, isLoading }: DailyTableProps) {
             {icon}
           </div>
           <h3 className="font-semibold text-sm leading-none tracking-normal">
-            {title} ({employees.filter(emp => emp !== '—').length} คน)
+            {title} ({employees.filter(emp => emp.name !== '—').length} คน)
           </h3>
         </div>
       </div>
       {!isEffectivelyEmpty ? (
         <div className="space-y-2">
-          {(period === 'month' ? prepared.filter(emp => emp !== '—') : prepared).map((employee, index) => (
+          {(period === 'month' ? prepared.filter(emp => emp.name !== '—') : prepared).map((employee, index) => (
             <div key={index} className={`px-3 py-2 rounded-lg bg-[var(--panel-bg)] text-sm font-semibold text-white dark:text-white`} 
                  style={{ color: 'var(--on-surface)' }}>
-              {employee}
+              <div>{employee.name}</div>
+              {employee.reason ? (
+                <div className="mt-1 text-xs font-normal opacity-80">{employee.reason}</div>
+              ) : null}
             </div>
           ))}
         </div>
