@@ -3,9 +3,8 @@ const GOOGLE_APPS_SCRIPT_URL =
 
 export const onRequestPost = async ({ request, waitUntil }: any) => {
   const body = await request.text();
-  const contentType = request.headers.get('content-type') || 'application/json';
 
-  const forward = forwardToGoogleAppsScript(body, contentType);
+  const forward = forwardToGoogleAppsScript(body);
 
   if (typeof waitUntil === 'function') {
     waitUntil(forward);
@@ -17,24 +16,21 @@ export const onRequestPost = async ({ request, waitUntil }: any) => {
   });
 };
 
-async function forwardToGoogleAppsScript(body: string, contentType: string) {
-  const first = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'content-type': contentType },
-    body,
-    redirect: 'manual',
+async function forwardToGoogleAppsScript(body: string) {
+  const payload = base64UrlEncode(body);
+  return fetch(`${GOOGLE_APPS_SCRIPT_URL}?route=line_webhook&payload=${payload}`, {
+    method: 'GET',
+    redirect: 'follow',
+  }).catch(() => undefined);
+}
+
+function base64UrlEncode(value: string) {
+  const bytes = new TextEncoder().encode(value);
+  let binary = '';
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
   });
-
-  const location = first.headers.get('location');
-  if (location && first.status >= 300 && first.status < 400) {
-    return fetch(location, {
-      method: 'POST',
-      headers: { 'content-type': contentType },
-      body,
-    });
-  }
-
-  return first;
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 
 export const onRequestGet = async () => {
