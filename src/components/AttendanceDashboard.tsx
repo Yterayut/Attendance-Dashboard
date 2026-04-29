@@ -23,7 +23,7 @@ function toISO(d: Date){ const tz = new Date(d.getTime()-d.getTimezoneOffset()*6
 function endOfMonthStr(y:number,m0:number){ const end = new Date(y, m0+1, 0); const tz=new Date(end.getTime()-end.getTimezoneOffset()*60000); return tz.toISOString().slice(0,10); }
 
 // Hardcoded employee list (สำหรับ dropdown บุคคล)
-const EMPLOYEES = ['เจ','กอล์ฟ','ปอง','เจ้าสัว','ปริม','จ๊าบ','รีน','เช็ค','เบนซ์'] as const;
+const EMPLOYEES = ['เจ','กอล์ฟ','ปอง','เจ้าสัว','ปริม','จ๊าบ','รีน','เช็ค','เบนซ์','มอธ'] as const;
 type EmpName = typeof EMPLOYEES[number];
 
 type DaySummary = { date:string; team:string; present:number; leave:number; notReported:number };
